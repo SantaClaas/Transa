@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    /* Just some fun base styles that are global */
+    @apply bg-zinc-50 text-zinc-950 caret-purple-400 accent-purple-400 selection:bg-purple-400 selection:text-purple-100;
+  }
+}
