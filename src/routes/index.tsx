@@ -1,14 +1,101 @@
-import { Show, createSignal } from "solid-js";
+import { For, Show, createSignal } from "solid-js";
 import { Icons } from "~/components/Icons";
 import Input from "~/components/Input";
+
+// Coordinates Konrad-Adenauer-Platz 50.7392935636551, 7.118113222838722
+// curl -X 'GET' \
+// 'https://v6.db.transport.rest/locations/nearby?results=8&stops=true&poi=false&linesOfStops=false&language=en&latitude=0&longitude=0' \
+// -H 'accept: application/json'
+
+const data = [
+  {
+    name: "Konrad-Adenauer-Platz",
+    time: "<1min",
+    distance: "<10m",
+  },
+  {
+    name: "Beuel-Rathaus",
+    time: "5min",
+    distance: "350m",
+  },
+  {
+    name: "Bonn Hermannstr./Konrad-Adenauer-Platz",
+    time: "9min",
+    distance: "650m",
+  },
+  {
+    name: "Bonn Rheindorfer Str.",
+    time: "5min",
+    distance: "400m",
+  },
+  {
+    name: "Bonn Goetheallee",
+    time: "10min",
+    distance: "650m",
+  },
+  {
+    name: "Bonn Beuel Hallenbad",
+    time: "11min",
+    distance: "750m",
+  },
+  {
+    name: "Doktor-Weis-Platz",
+    time: "9min",
+    distance: "600m",
+  },
+  {
+    name: "Bonn Obere Wilhelmstr.",
+    time: "10min",
+    distance: "650m",
+  },
+  {
+    name: "Beueler Bahnhofsplatz",
+    time: "10min",
+    distance: "700m",
+  },
+  {
+    name: "Bonn Beuel Bf",
+    time: "13min",
+    distance: "900m",
+  },
+];
 export default function Home() {
   const [isLocation, setIsLocation] = createSignal(true);
   return (
-    <main class="px-4">
-      <form class="absolute inset-x-4 bottom-0 mt-auto block animate-move-in space-y-5 rounded-t-lg bg-zinc-100 p-4 shadow-2xl">
+    <main class="grid h-full grid-rows-[1fr_auto]">
+      <ol class="divide-y divide-zinc-100 overflow-y-scroll">
+        {/* TODO add next departure line icon and time */}
+        {/* TODO add map and A/B tests */}
+        {/* TODO add that ticket sale, management and information is out of scope. That's why the navigation options are limited and focus is on public transport not long distance travel */}
+        <For each={data}>
+          {(item) => (
+            <li class="px-4 py-5">
+              <p class="text-sm font-semibold leading-6 text-zinc-900">
+                {item.name}
+              </p>
+              <p class="space-x-2 text-xs leading-5 text-zinc-500">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="currentColor"
+                  class="inline-block h-5 w-5 text-zinc-400"
+                >
+                  <path d="m280-40 112-564-72 28v136h-80v-188l202-86q14-6 29.5-7t29.5 4q14 5 26.5 14t20.5 23l40 64q26 42 70.5 69T760-520v80q-70 0-125-29t-94-74l-25 123 84 80v300h-80v-260l-84-64-72 324h-84Zm260-700q-33 0-56.5-23.5T460-820q0-33 23.5-56.5T540-900q33 0 56.5 23.5T620-820q0 33-23.5 56.5T540-740Z" />
+                </svg>
+                <time>{item.time}</time>
+
+                <span>{item.distance}</span>
+              </p>
+            </li>
+          )}
+        </For>
+      </ol>
+      <form class=" mt-auto block animate-move-in space-y-5 rounded-t-lg bg-zinc-100 p-4 px-4 shadow-2xl">
         {/* As the naviation UI is bottom to top, we should make the search use the same to be not confusing.
         Also don't you first think of where you want to go and not where you are right now? */}
-        {/* TODO add animation moving bottom sheet for search into view to get focus from user */}
+        {/* animation moving bottom sheet for search into view to get focus from user */}
         <fieldset class="space-y-2">
           <div>
             <label
