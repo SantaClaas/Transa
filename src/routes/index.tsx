@@ -81,8 +81,8 @@ const data = [
 export default function Home() {
   const [isLocation, setIsLocation] = createSignal(true);
   return (
-    <main class="flex h-full flex-col bg-zinc-100">
-      <ol class="divide-y divide-zinc-100 overflow-y-scroll rounded-b-3xl bg-zinc-50 px-4 shadow">
+    <main class="flex h-full flex-col bg-zinc-50">
+      <ol class="divide-y divide-zinc-100 overflow-y-scroll bg-zinc-100 px-4">
         {/* TODO add next departure line icon and time */}
         {/* TODO add map and A/B tests */}
         {/* TODO add that ticket sale, management and information is out of scope. That's why the navigation options are limited and focus is on public transport not long distance travel */}
@@ -111,7 +111,7 @@ export default function Home() {
           )}
         </For>
       </ol>
-      <form class="space-y-5 p-4 px-4">
+      <form class="space-y-5 p-4 px-4 shadow">
         {/* As the naviation UI is bottom to top, we should make the search use the same to be not confusing.
         Also don't you first think of where you want to go and not where you are right now? */}
         {/* animation moving bottom sheet for search into view to get focus from user */}
