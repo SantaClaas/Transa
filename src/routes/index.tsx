@@ -58,29 +58,54 @@ const data = [
     time: "13min",
     distance: "900m",
   },
+  {
+    name: "I need",
+    time: "<1min",
+    distance: "<10m",
+  },
+  {
+    name: "More data",
+    time: "5min",
+    distance: "350m",
+  },
+  {
+    name: "To see",
+    time: "9min",
+    distance: "650m",
+  },
+  {
+    name: "How scroll behaves",
+    time: "5min",
+    distance: "400m",
+  },
 ];
+
+// const observer = new IntersectionObserver((entries) => {
+//   console.debug(entries);
+// });
+
 export default function Home() {
   const [isLocation, setIsLocation] = createSignal(true);
   return (
-    <main class="grid h-full grid-rows-[1fr_auto]">
-      <ol class="divide-y divide-zinc-100 overflow-y-scroll">
+    <main class="grid h-full grid-cols-1 grid-rows-[1fr_auto]">
+      <ol class="col-start-1 row-span-2 row-start-1 divide-y divide-zinc-100 overflow-y-scroll px-4">
         {/* TODO add next departure line icon and time */}
         {/* TODO add map and A/B tests */}
         {/* TODO add that ticket sale, management and information is out of scope. That's why the navigation options are limited and focus is on public transport not long distance travel */}
         <For each={data}>
           {(item) => (
-            <li class="px-4 py-5">
+            <li class="py-5">
               <p class="text-sm font-semibold leading-6 text-zinc-900">
                 {item.name}
               </p>
-              <p class="space-x-2 text-xs leading-5 text-zinc-500">
+              <p class="mt-1 flex gap-x-2 text-xs leading-5 text-zinc-500">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24px"
                   viewBox="0 -960 960 960"
                   width="24px"
                   fill="currentColor"
-                  class="inline-block h-5 w-5 text-zinc-400"
+                  class="inline-block size-5 text-zinc-400"
                 >
                   <path d="m280-40 112-564-72 28v136h-80v-188l202-86q14-6 29.5-7t29.5 4q14 5 26.5 14t20.5 23l40 64q26 42 70.5 69T760-520v80q-70 0-125-29t-94-74l-25 123 84 80v300h-80v-260l-84-64-72 324h-84Zm260-700q-33 0-56.5-23.5T460-820q0-33 23.5-56.5T540-900q33 0 56.5 23.5T620-820q0 33-23.5 56.5T540-740Z" />
                 </svg>
@@ -92,11 +117,21 @@ export default function Home() {
           )}
         </For>
       </ol>
-      <form class=" mt-auto block animate-move-in space-y-5 rounded-t-lg bg-zinc-100 p-4 px-4 shadow-2xl">
+      {/* <fieldset>
+        <legend class="sr-only">Switch view</legend>
+        <label>
+          <input type="radio" name="view" class="sr-only" />
+        </label>
+        <label>
+          <input type="radio" name="view" class="sr-only" />
+        </label>
+      </fieldset> */}
+      <form class="col-start-1 row-start-2 mx-2 mt-auto block animate-move-in space-y-5 rounded-t-lg bg-zinc-100 p-4 px-4 shadow-2xl">
         {/* As the naviation UI is bottom to top, we should make the search use the same to be not confusing.
         Also don't you first think of where you want to go and not where you are right now? */}
         {/* animation moving bottom sheet for search into view to get focus from user */}
         <fieldset class="space-y-2">
+          <legend class="sr-only">Search stations</legend>
           <div>
             <label
               for="destination"
