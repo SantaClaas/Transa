@@ -1,7 +1,7 @@
 import { JSX } from "solid-js";
 
 export default function Input(
-  properties: Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "class">
+  properties: Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "class">,
 ) {
   return (
     <input

@@ -2,7 +2,7 @@
  * @param {string} path
  * @returns {import("solid-js").VoidComponent}
  */
-function Icon(path) {
+function Icon(path: string): import("solid-js").VoidComponent {
   return () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
