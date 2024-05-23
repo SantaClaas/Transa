@@ -1,6 +1,6 @@
 import { For, Show, createSignal } from "solid-js";
-import { Icons } from "~/components/Icons";
-import Input from "~/components/Input";
+import { clientOnly } from "@solidjs/start";
+import { isServer } from "solid-js/web";
 
 // Coordinates Konrad-Adenauer-Platz 50.7392935636551, 7.118113222838722
 // curl -X 'GET' \
@@ -80,15 +80,11 @@ const data = [
   },
 ];
 
-// const observer = new IntersectionObserver((entries) => {
-//   console.debug(entries);
-// });
-
 export default function Home() {
   const [isLocation, setIsLocation] = createSignal(true);
   return (
-    <main class="grid h-full grid-cols-1 grid-rows-[1fr_auto]">
-      <ol class="col-start-1 row-span-2 row-start-1 divide-y divide-zinc-100 overflow-y-scroll px-4">
+    <main class="grid h-full grid-rows-[1fr_auto]">
+      <ol class="col-start-1 row-start-1 divide-y divide-zinc-100 overflow-y-scroll px-4">
         {/* TODO add next departure line icon and time */}
         {/* TODO add map and A/B tests */}
         {/* TODO add that ticket sale, management and information is out of scope. That's why the navigation options are limited and focus is on public transport not long distance travel */}
@@ -117,16 +113,37 @@ export default function Home() {
           )}
         </For>
       </ol>
-      {/* <fieldset>
+      <fieldset class="col-start-1 row-start-1 space-x-2 place-self-end self-end text-zinc-400">
         <legend class="sr-only">Switch view</legend>
-        <label>
-          <input type="radio" name="view" class="sr-only" />
+        <label class="inline-block rounded-full bg-zinc-200 p-3 shadow-2xl has-[:checked]:text-purple-600">
+          <span class="sr-only">List</span>
+          <input type="radio" name="view" class="sr-only" checked />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="currentColor"
+          >
+            <path d="M280-600v-80h560v80H280Zm0 160v-80h560v80H280Zm0 160v-80h560v80H280ZM160-600q-17 0-28.5-11.5T120-640q0-17 11.5-28.5T160-680q17 0 28.5 11.5T200-640q0 17-11.5 28.5T160-600Zm0 160q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520q17 0 28.5 11.5T200-480q0 17-11.5 28.5T160-440Zm0 160q-17 0-28.5-11.5T120-320q0-17 11.5-28.5T160-360q17 0 28.5 11.5T200-320q0 17-11.5 28.5T160-280Z" />
+          </svg>
         </label>
-        <label>
+        <label class="inline-block rounded-full bg-zinc-200 p-3 shadow-2xl has-[:checked]:text-purple-600">
+          <span class="sr-only">Map</span>
           <input type="radio" name="view" class="sr-only" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="currentColor"
+          >
+            <path d="m600-120-240-84-186 72q-20 8-37-4.5T120-170v-560q0-13 7.5-23t20.5-15l212-72 240 84 186-72q20-8 37 4.5t17 33.5v560q0 13-7.5 23T812-192l-212 72Zm-40-98v-468l-160-56v468l160 56Zm80 0 120-40v-474l-120 46v468Zm-440-10 120-46v-468l-120 40v474Zm440-458v468-468Zm-320-56v468-468Z" />
+          </svg>
         </label>
-      </fieldset> */}
-      <form class="col-start-1 row-start-2 mx-2 mt-auto block animate-move-in space-y-5 rounded-t-lg bg-zinc-100 p-4 px-4 shadow-2xl">
+      </fieldset>
+
+      <form class="mt-auto block animate-move-in space-y-5 rounded-t-xl bg-purple-600 p-4 px-4 shadow-md">
         {/* As the naviation UI is bottom to top, we should make the search use the same to be not confusing.
         Also don't you first think of where you want to go and not where you are right now? */}
         {/* animation moving bottom sheet for search into view to get focus from user */}
@@ -135,7 +152,7 @@ export default function Home() {
           <div>
             <label
               for="destination"
-              class="block text-sm font-medium leading-6 text-gray-900"
+              class="block text-sm font-semibold leading-6 text-zinc-100"
             >
               Destination
             </label>
@@ -144,7 +161,7 @@ export default function Home() {
                 type="text"
                 name="destination"
                 id="destination"
-                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="block w-full rounded-md border-0 bg-zinc-50 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -152,7 +169,7 @@ export default function Home() {
           <div>
             <label
               for="start"
-              class="block text-sm font-medium leading-6 text-gray-900"
+              class="block text-sm font-semibold leading-6 text-zinc-100"
             >
               Start
             </label>
@@ -161,7 +178,7 @@ export default function Home() {
                 type="text"
                 name="start"
                 id="start"
-                class="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="block w-full rounded-md border-0 bg-zinc-50 px-3 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
               <label class="absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-400">
                 <input type="checkbox" class="peer sr-only" />
@@ -192,7 +209,7 @@ export default function Home() {
         </fieldset>
         <button
           type="submit"
-          class="w-full rounded-full bg-purple-600 px-3.5 py-2 text-sm font-semibold text-zinc-50 shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+          class="w-full rounded-full bg-zinc-50 px-3.5 py-2 text-sm font-bold text-purple-600 shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
         >
           Go
         </button>
