@@ -81,29 +81,37 @@ const data = [
 export default function Home() {
   const [isLocation, setIsLocation] = createSignal(true);
   return (
-    <main class="flex h-full flex-col justify-between bg-zinc-50 pt-4">
-      <ol class="mx-4 grid grid-cols-[1fr_auto] overflow-y-scroll rounded-3xl bg-zinc-200 px-4">
+    <main class="grid h-full grid-cols-1 grid-rows-[1fr_auto] justify-between bg-zinc-50 pt-4">
+      <ol class="grid grid-cols-[1fr_auto] divide-y overflow-y-scroll rounded-3xl px-4">
         {/* TODO add next departure line icon and time */}
         {/* TODO add map and A/B tests */}
         {/* TODO add that ticket sale, management and information is out of scope. That's why the navigation options are limited and focus is on public transport not long distance travel */}
         <For each={data.toReversed()}>
           {(item) => (
-            <li class="col-span-2 grid grid-cols-subgrid justify-between py-2 text-xl font-bold leading-6 text-zinc-500">
-              <p class="">{item.name}</p>
-              <p class="font-light text-zinc-600">
-                {/* <svg
+            <li class="300 col-span-2 grid grid-cols-subgrid grid-rows-2 items-center justify-between py-2">
+              <h2 class="text-base font-normal leading-6 text-zinc-800">
+                {item.name}
+              </h2>
+
+              {/* TODO how to align text with SVG without flex */}
+              <p class="flex items-center text-zinc-500">
+                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24px"
                   viewBox="0 -960 960 960"
                   width="24px"
                   fill="currentColor"
-                  class="inline-block size-5 "
+                  class="inline-block size-4"
                 >
                   <path d="m280-40 112-564-72 28v136h-80v-188l202-86q14-6 29.5-7t29.5 4q14 5 26.5 14t20.5 23l40 64q26 42 70.5 69T760-520v80q-70 0-125-29t-94-74l-25 123 84 80v300h-80v-260l-84-64-72 324h-84Zm260-700q-33 0-56.5-23.5T460-820q0-33 23.5-56.5T540-900q33 0 56.5 23.5T620-820q0 33-23.5 56.5T540-740Z" />
-                </svg>{" "} */}
-                <time>{item.time}</time> {""}
-                <span>{item.distance}</span>
+                </svg>
+                <time class="col-start-1 text-sm text-zinc-600">
+                  {item.time}
+                </time>
               </p>
+              <span class="col-start-2 row-start-1 text-xs text-zinc-600">
+                {item.distance}
+              </span>
 
               {/* <p class="mt-1 flex gap-x-2 text-xs leading-5 text-zinc-500">
                 <svg
