@@ -5,7 +5,7 @@ export default function Home() {
   const [isLocation, setIsLocation] = createSignal(true);
   return (
     <main class="px-4">
-      <form class="block p-4 space-y-5 rounded-t-lg bg-zinc-100 mt-auto animate-move-in absolute bottom-0 inset-x-4 shadow">
+      <form class="block p-4 space-y-5 rounded-t-lg bg-zinc-100 mt-auto animate-move-in absolute bottom-0 inset-x-4 shadow-2xl">
         {/* As the naviation UI is bottom to top, we should make the search use the same to be not confusing.
         Also don't you first think of where you want to go and not where you are right now? */}
         {/* TODO add animation moving bottom sheet for search into view to get focus from user */}
