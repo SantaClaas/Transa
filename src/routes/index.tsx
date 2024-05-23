@@ -143,7 +143,7 @@ export default function Home() {
         </label>
       </fieldset>
 
-      <form class="mt-auto block animate-move-in space-y-5 rounded-t-xl bg-purple-600 p-4 px-4 shadow-md">
+      <form class="mt-auto block animate-move-in space-y-5 rounded-t-xl bg-zinc-200 p-4 px-4">
         {/* As the naviation UI is bottom to top, we should make the search use the same to be not confusing.
         Also don't you first think of where you want to go and not where you are right now? */}
         {/* animation moving bottom sheet for search into view to get focus from user */}
@@ -152,7 +152,7 @@ export default function Home() {
           <div>
             <label
               for="destination"
-              class="block text-sm font-semibold leading-6 text-zinc-100"
+              class="block text-sm font-medium leading-6 text-gray-900"
             >
               Destination
             </label>
@@ -161,7 +161,7 @@ export default function Home() {
                 type="text"
                 name="destination"
                 id="destination"
-                class="block w-full rounded-md border-0 bg-zinc-50 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -169,7 +169,7 @@ export default function Home() {
           <div>
             <label
               for="start"
-              class="block text-sm font-semibold leading-6 text-zinc-100"
+              class="block text-sm font-medium leading-6 text-gray-900"
             >
               Start
             </label>
@@ -178,7 +178,7 @@ export default function Home() {
                 type="text"
                 name="start"
                 id="start"
-                class="block w-full rounded-md border-0 bg-zinc-50 px-3 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
               <label class="absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-400">
                 <input type="checkbox" class="peer sr-only" />
@@ -209,7 +209,7 @@ export default function Home() {
         </fieldset>
         <button
           type="submit"
-          class="w-full rounded-full bg-zinc-50 px-3.5 py-2 text-sm font-bold text-purple-600 shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+          class="w-full rounded-full bg-purple-600 px-3.5 py-2 text-sm font-semibold text-zinc-50 shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
         >
           Go
         </button>
