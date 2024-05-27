@@ -97,7 +97,7 @@ export default function Home() {
   return (
     <>
       <header
-        class="sticky top-0 h-16 content-center px-1 py-2 text-center transition-shadow duration-1000 ease-out"
+        class="sticky top-0 h-16 content-center px-1 py-2 text-center transition-all duration-1000 ease-out"
         classList={{
           "bg-light-surface": !isScrolled(),
           "bg-light-surface-container shadow": isScrolled(),
@@ -105,8 +105,9 @@ export default function Home() {
       >
         <h1 class="text-title-lg text-light-on-surface">Transa</h1>
       </header>
-      <main class="mx-1 grid min-h-0 grid-cols-1 grid-rows-[1fr_auto] justify-between transition-colors">
-        <ol class=" col-start-1 row-span-2 row-start-1 grid grid-cols-[1fr_auto] rounded-t-extra-large bg-light-surface-container-low">
+      <main class="mx-1 min-h-0 justify-between ">
+        {/*TODO adjust padding bottom to match height of input area */}
+        <ol class="col-start-1 row-span-2 row-start-1 grid grid-cols-[1fr_auto] rounded-t-extra-large bg-light-surface-container pb-60">
           {/* TODO add next departure line icon and time */}
           {/* TODO add map and A/B tests */}
           {/* TODO add that ticket sale, management and information is out of scope. That's why the navigation options are limited and focus is on public transport not long distance travel */}
@@ -188,7 +189,7 @@ export default function Home() {
         </label>
       </fieldset> */}
       </main>
-      <form class="animate-fly-in fixed inset-x-0 bottom-0 col-start-1 mx-1 space-y-5 rounded-t-extra-large bg-light-surface-container p-4 px-4">
+      <form class="animate-fly-in fixed inset-x-0 bottom-0 col-start-1 mx-1 space-y-5 rounded-t-extra-large bg-light-surface-container-high p-4 px-4">
         {/* As the naviation UI is bottom to top, we should make the search use the same to be not confusing.
         Also don't you first think of where you want to go and not where you are right now? */}
         {/* animation moving bottom sheet for search into view to get focus from user */}
