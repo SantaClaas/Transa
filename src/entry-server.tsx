@@ -11,7 +11,7 @@ export default createHandler(() => (
           <link rel="icon" href="/favicon.ico" />
           {assets}
         </head>
-        <body class="h-dvh">
+        <body class="grid h-dvh grid-rows-[auto_1fr]">
           {children}
           {scripts}
         </body>

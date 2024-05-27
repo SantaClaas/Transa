@@ -6,13 +6,13 @@ export default {
   theme: {
     extend: {
       keyframes: {
-        "move-in": {
+        "fly-in": {
           from: { transform: "translateY(100%)" },
           to: { transform: "translateY(0)" },
         },
       },
       animation: {
-        "move-in": "move-in 500ms ease-in-out",
+        "fly-in": "fly-in 500ms ease-in-out",
       },
     },
   },

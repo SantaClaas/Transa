@@ -79,42 +79,45 @@ const data = [
 ];
 
 export default function Home() {
-  const [isLocation, setIsLocation] = createSignal(true);
   return (
-    <main class="grid h-full grid-cols-1 grid-rows-[1fr_auto] justify-between bg-light-surface pt-4">
-      <ol class="grid grid-cols-[1fr_auto] overflow-y-scroll rounded-3xl py-2">
-        {/* TODO add next departure line icon and time */}
-        {/* TODO add map and A/B tests */}
-        {/* TODO add that ticket sale, management and information is out of scope. That's why the navigation options are limited and focus is on public transport not long distance travel */}
-        <For each={data.toReversed()}>
-          {(item) => (
-            <li class="300 col-span-2 grid grid-cols-subgrid grid-rows-2 items-center justify-between px-4 py-2">
-              <h2 class="text-body-lg font-body-lg leading-6 text-light-on-surface">
-                {item.name}
-              </h2>
+    <>
+      <header class="sticky top-0 h-16 content-center bg-light-surface px-1 py-2 text-center">
+        <h1 class="text-title-lg text-light-on-surface">Transa</h1>
+      </header>
+      <main class="mx-1 grid min-h-0 grid-cols-1 grid-rows-[1fr_auto] justify-between">
+        <ol class="animate-fly-in col-start-1 row-span-2 row-start-1 grid grid-cols-[1fr_auto] rounded-t-extra-large bg-light-surface-container-low">
+          {/* TODO add next departure line icon and time */}
+          {/* TODO add map and A/B tests */}
+          {/* TODO add that ticket sale, management and information is out of scope. That's why the navigation options are limited and focus is on public transport not long distance travel */}
+          <For each={data.toReversed()}>
+            {(item) => (
+              <li class="300 col-span-2 grid grid-cols-subgrid grid-rows-2 items-center justify-between px-4 py-2">
+                <h2 class="text-body-lg font-body-lg leading-6 text-light-on-surface">
+                  {item.name}
+                </h2>
 
-              {/* TODO how to align text with SVG without flex */}
-              <p class="flex items-center text-light-on-surface-variant">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="currentColor"
-                  class="inline-block size-4"
-                >
-                  <path d="m280-40 112-564-72 28v136h-80v-188l202-86q14-6 29.5-7t29.5 4q14 5 26.5 14t20.5 23l40 64q26 42 70.5 69T760-520v80q-70 0-125-29t-94-74l-25 123 84 80v300h-80v-260l-84-64-72 324h-84Zm260-700q-33 0-56.5-23.5T460-820q0-33 23.5-56.5T540-900q33 0 56.5 23.5T620-820q0 33-23.5 56.5T540-740Z" />
-                </svg>
-                <time class="col-start-1 text-body-md text-light-on-surface-variant">
-                  {item.time}
-                </time>
-              </p>
-              {/* Trailing supporting text */}
-              <span class="col-start-2 row-start-1 text-label-sm text-light-on-surface-variant">
-                {item.distance}
-              </span>
+                {/* TODO how to align text with SVG without flex */}
+                <p class="flex items-center text-light-on-surface-variant">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="currentColor"
+                    class="inline-block size-4"
+                  >
+                    <path d="m280-40 112-564-72 28v136h-80v-188l202-86q14-6 29.5-7t29.5 4q14 5 26.5 14t20.5 23l40 64q26 42 70.5 69T760-520v80q-70 0-125-29t-94-74l-25 123 84 80v300h-80v-260l-84-64-72 324h-84Zm260-700q-33 0-56.5-23.5T460-820q0-33 23.5-56.5T540-900q33 0 56.5 23.5T620-820q0 33-23.5 56.5T540-740Z" />
+                  </svg>
+                  <time class="col-start-1 text-body-md text-light-on-surface-variant">
+                    {item.time}
+                  </time>
+                </p>
+                {/* Trailing supporting text */}
+                <span class="col-start-2 row-start-1 text-label-sm text-light-on-surface-variant">
+                  {item.distance}
+                </span>
 
-              {/* <p class="mt-1 flex gap-x-2 text-xs leading-5 text-zinc-500">
+                {/* <p class="mt-1 flex gap-x-2 text-xs leading-5 text-zinc-500">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24px"
@@ -129,36 +132,12 @@ export default function Home() {
 
                 <span>{item.distance}</span>
               </p> */}
-            </li>
-          )}
-        </For>
-      </ol>
-      <form class="space-y-5 p-4 px-4">
-        {/* As the naviation UI is bottom to top, we should make the search use the same to be not confusing.
-        Also don't you first think of where you want to go and not where you are right now? */}
-        {/* animation moving bottom sheet for search into view to get focus from user */}
-        <fieldset class="space-y-2 ">
-          <label class="block w-full rounded-b-extra-small rounded-t-large bg-light-primary-container px-4 pb-1 pt-2">
-            <span class="text-sm font-bold leading-none text-light-on-primary-container">
-              Destination
-            </span>
-            <input class="block bg-transparent text-2xl font-bold uppercase outline-none" />
-          </label>
-          <label class="block w-full rounded-b-3xl rounded-t bg-light-primary-container px-4 pb-2 pt-1">
-            <span class="text-sm font-bold leading-none text-light-on-primary-container">
-              Start
-            </span>
-            <input class="block bg-transparent text-2xl font-bold uppercase outline-none" />
-          </label>
-        </fieldset>
-        <button
-          type="submit"
-          class="ml-auto block rounded-full bg-light-primary px-6 py-2.5 text-sm font-medium leading-5 text-light-on-primary"
-        >
-          Go
-        </button>
-      </form>
-      {/* <fieldset class="col-start-1 row-start-1 space-x-2 place-self-end self-end text-zinc-400">
+              </li>
+            )}
+          </For>
+        </ol>
+
+        {/* <fieldset class="col-start-1 row-start-1 space-x-2 place-self-end self-end text-zinc-400">
         <legend class="sr-only">Switch view</legend>
         <label class="inline-block rounded-full bg-zinc-200 p-3 shadow-2xl has-[:checked]:text-purple-600">
           <span class="sr-only">List</span>
@@ -187,6 +166,28 @@ export default function Home() {
           </svg>
         </label>
       </fieldset> */}
-    </main>
+      </main>
+      <form class="animate-fly-in fixed inset-x-0 bottom-0 col-start-1 mx-1 space-y-5 rounded-t-extra-large bg-light-surface-container p-4 px-4">
+        {/* As the naviation UI is bottom to top, we should make the search use the same to be not confusing.
+        Also don't you first think of where you want to go and not where you are right now? */}
+        {/* animation moving bottom sheet for search into view to get focus from user */}
+        <fieldset class="space-y-2 ">
+          <label class="block w-full rounded-b-extra-small rounded-t-large bg-light-primary-container px-4 pb-1 pt-2 text-light-on-primary-container">
+            <span class="text-sm font-bold leading-none">Destination</span>
+            <input class="block bg-transparent text-2xl font-bold uppercase outline-none" />
+          </label>
+          <label class="block w-full rounded-b-3xl rounded-t bg-light-primary-container px-4 pb-2 pt-1 text-light-on-primary-container">
+            <span class="text-sm font-bold leading-none ">Start</span>
+            <input class="block bg-transparent text-2xl font-bold uppercase outline-none" />
+          </label>
+        </fieldset>
+        <button
+          type="submit"
+          class="ml-auto block rounded-full bg-light-primary px-6 py-2.5 text-sm font-medium leading-5 text-light-on-primary"
+        >
+          Go
+        </button>
+      </form>
+    </>
   );
 }
