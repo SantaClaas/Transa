@@ -1,4 +1,5 @@
-import { For, createSignal } from "solid-js";
+import { For, createEffect, createSignal, onMount } from "solid-js";
+import { isServer } from "solid-js/web";
 
 // Coordinates Konrad-Adenauer-Platz 50.7392935636551, 7.118113222838722
 // curl -X 'GET' \
@@ -79,13 +80,33 @@ const data = [
 ];
 
 export default function Home() {
+  const observer = isServer
+    ? undefined
+    : new IntersectionObserver((entries) => {
+        console.debug("IntersectionObserver", entries[0].intersectionRatio);
+      });
+
+  const [isScrolled, setIsScrolled] = createSignal(false);
+
+  if (!isServer) {
+    document.addEventListener("scroll", () =>
+      setIsScrolled(window.scrollY > 0),
+    );
+  }
+
   return (
     <>
-      <header class="sticky top-0 h-16 content-center bg-light-surface px-1 py-2 text-center">
+      <header
+        class="sticky top-0 h-16 content-center px-1 py-2 text-center transition-shadow duration-1000 ease-out"
+        classList={{
+          "bg-light-surface": !isScrolled(),
+          "bg-light-surface-container shadow": isScrolled(),
+        }}
+      >
         <h1 class="text-title-lg text-light-on-surface">Transa</h1>
       </header>
-      <main class="mx-1 grid min-h-0 grid-cols-1 grid-rows-[1fr_auto] justify-between">
-        <ol class="animate-fly-in col-start-1 row-span-2 row-start-1 grid grid-cols-[1fr_auto] rounded-t-extra-large bg-light-surface-container-low">
+      <main class="mx-1 grid min-h-0 grid-cols-1 grid-rows-[1fr_auto] justify-between transition-colors">
+        <ol class=" col-start-1 row-span-2 row-start-1 grid grid-cols-[1fr_auto] rounded-t-extra-large bg-light-surface-container-low">
           {/* TODO add next departure line icon and time */}
           {/* TODO add map and A/B tests */}
           {/* TODO add that ticket sale, management and information is out of scope. That's why the navigation options are limited and focus is on public transport not long distance travel */}
