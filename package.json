@@ -18,6 +18,7 @@
     "node": ">=18"
   },
   "devDependencies": {
+    "@claas.dev/material-tailwind": "^0.4.0",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",

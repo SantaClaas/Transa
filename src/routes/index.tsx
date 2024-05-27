@@ -81,20 +81,20 @@ const data = [
 export default function Home() {
   const [isLocation, setIsLocation] = createSignal(true);
   return (
-    <main class="grid h-full grid-cols-1 grid-rows-[1fr_auto] justify-between bg-zinc-50 pt-4">
-      <ol class="grid grid-cols-[1fr_auto] divide-y overflow-y-scroll rounded-3xl px-4">
+    <main class="grid h-full grid-cols-1 grid-rows-[1fr_auto] justify-between bg-light-surface pt-4">
+      <ol class="grid grid-cols-[1fr_auto] overflow-y-scroll rounded-3xl py-2">
         {/* TODO add next departure line icon and time */}
         {/* TODO add map and A/B tests */}
         {/* TODO add that ticket sale, management and information is out of scope. That's why the navigation options are limited and focus is on public transport not long distance travel */}
         <For each={data.toReversed()}>
           {(item) => (
-            <li class="300 col-span-2 grid grid-cols-subgrid grid-rows-2 items-center justify-between py-2">
-              <h2 class="text-base font-normal leading-6 text-zinc-800">
+            <li class="300 col-span-2 grid grid-cols-subgrid grid-rows-2 items-center justify-between px-4 py-2">
+              <h2 class="text-body-lg font-body-lg leading-6 text-light-on-surface">
                 {item.name}
               </h2>
 
               {/* TODO how to align text with SVG without flex */}
-              <p class="flex items-center text-zinc-500">
+              <p class="flex items-center text-light-on-surface-variant">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24px"
@@ -105,11 +105,12 @@ export default function Home() {
                 >
                   <path d="m280-40 112-564-72 28v136h-80v-188l202-86q14-6 29.5-7t29.5 4q14 5 26.5 14t20.5 23l40 64q26 42 70.5 69T760-520v80q-70 0-125-29t-94-74l-25 123 84 80v300h-80v-260l-84-64-72 324h-84Zm260-700q-33 0-56.5-23.5T460-820q0-33 23.5-56.5T540-900q33 0 56.5 23.5T620-820q0 33-23.5 56.5T540-740Z" />
                 </svg>
-                <time class="col-start-1 text-sm text-zinc-600">
+                <time class="col-start-1 text-body-md text-light-on-surface-variant">
                   {item.time}
                 </time>
               </p>
-              <span class="col-start-2 row-start-1 text-xs text-zinc-600">
+              {/* Trailing supporting text */}
+              <span class="col-start-2 row-start-1 text-label-sm text-light-on-surface-variant">
                 {item.distance}
               </span>
 
@@ -137,22 +138,22 @@ export default function Home() {
         Also don't you first think of where you want to go and not where you are right now? */}
         {/* animation moving bottom sheet for search into view to get focus from user */}
         <fieldset class="space-y-2 ">
-          <label class="block w-full rounded-b rounded-t-3xl bg-zinc-200 px-4 pb-1 pt-2">
-            <span class="text-sm font-bold leading-none text-zinc-600">
+          <label class="block w-full rounded-b-extra-small rounded-t-large bg-light-primary-container px-4 pb-1 pt-2">
+            <span class="text-sm font-bold leading-none text-light-on-primary-container">
               Destination
             </span>
-            <input class="block border-zinc-400 bg-transparent text-2xl font-bold uppercase outline-none" />
+            <input class="block bg-transparent text-2xl font-bold uppercase outline-none" />
           </label>
-          <label class="block w-full rounded-b-3xl rounded-t bg-zinc-200 px-4 pb-2 pt-1">
-            <span class="text-sm font-bold leading-none text-zinc-600">
+          <label class="block w-full rounded-b-3xl rounded-t bg-light-primary-container px-4 pb-2 pt-1">
+            <span class="text-sm font-bold leading-none text-light-on-primary-container">
               Start
             </span>
-            <input class="block border-zinc-400 bg-transparent text-2xl font-bold uppercase outline-none" />
+            <input class="block bg-transparent text-2xl font-bold uppercase outline-none" />
           </label>
         </fieldset>
         <button
           type="submit"
-          class="ml-auto block rounded-full bg-purple-500 px-6 py-2.5 text-sm font-medium leading-5 text-zinc-50"
+          class="ml-auto block rounded-full bg-light-primary px-6 py-2.5 text-sm font-medium leading-5 text-light-on-primary"
         >
           Go
         </button>

@@ -24,6 +24,9 @@ importers:
         specifier: ^0.3.11
         version: 0.3.11(@opentelemetry/api@1.8.0)(@types/node@20.12.12)(ioredis@5.4.1)(terser@5.31.0)
     devDependencies:
+      '@claas.dev/material-tailwind':
+        specifier: ^0.4.0
+        version: 0.4.0
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
@@ -159,6 +162,11 @@ packages:
   '@babel/types@7.24.5':
     resolution: {integrity: sha512-6mQNsaLeXTw0nxYUYu+NSa4Hx4BlF1x1x8/PMFbiR+GBSr+2DkECc69b8hgy2frEodNcvPffeH8YfWd3LI6jhQ==}
     engines: {node: '>=6.9.0'}
+
+  '@claas.dev/material-tailwind@0.4.0':
+    resolution: {integrity: sha512-xTxtFnbOcY/fR/KHLw5XcAJY20uQdlHfbkcXHhXZBS765xIAX7bIZJNvoTBhZMBLv60ZGF6rzVObDBOqILvj4w==}
+    bundledDependencies:
+      - '@material/material-color-utilities'
 
   '@cloudflare/kv-asset-handler@0.3.2':
     resolution: {integrity: sha512-EeEjMobfuJrwoctj7FA1y1KEbM0+Q1xSjobIEyie9k4haVEBB7vkDvsasw1pM3rO39mL2akxIAzLMUAtrMHZhA==}
@@ -2884,6 +2892,12 @@ snapshots:
       '@babel/helper-string-parser': 7.24.1
       '@babel/helper-validator-identifier': 7.24.5
       to-fast-properties: 2.0.0
+
+  '@claas.dev/material-tailwind@0.4.0':
+    dependencies:
+      tailwindcss: 3.4.3
+    transitivePeerDependencies:
+      - ts-node
 
   '@cloudflare/kv-asset-handler@0.3.2':
     dependencies:
