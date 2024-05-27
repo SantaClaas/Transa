@@ -47,7 +47,7 @@ jobs:
       - name: 🆙 Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: solid-start/.output/public
+          path: .output/public
 
   deploy:
     # Only start after build
