@@ -22,9 +22,6 @@ concurrency:
 
 jobs:
   build:
-    defaults:
-      run:
-        working-directory: solid-start
     runs-on: ubuntu-latest
     steps:
       - name: 🛎️ Checkout
