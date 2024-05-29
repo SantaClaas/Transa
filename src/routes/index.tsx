@@ -189,26 +189,49 @@ export default function Home() {
         </label>
       </fieldset> */}
       </main>
-      <form class="animate-fly-in fixed inset-x-0 bottom-0 col-start-1 mx-1 space-y-5 rounded-t-extra-large bg-light-surface-container-high p-4 px-4">
+      <form class="fixed inset-x-0 bottom-0 col-start-1 mx-1 animate-fly-in space-y-5 rounded-t-extra-large bg-light-surface-container-high p-4 px-4">
         {/* As the naviation UI is bottom to top, we should make the search use the same to be not confusing.
         Also don't you first think of where you want to go and not where you are right now? */}
         {/* animation moving bottom sheet for search into view to get focus from user */}
-        <fieldset class="space-y-2 ">
-          <label class="block w-full rounded-b-extra-small rounded-t-large bg-light-primary-container px-4 pb-1 pt-2 text-light-on-primary-container">
+        <fieldset class="grid grid-cols-[1fr_auto] grid-rows-3 gap-2">
+          <label class="col-span-2 block w-full rounded-3xl rounded-br bg-light-secondary px-4 pb-1 pt-2 text-light-on-secondary">
             <span class="text-sm font-bold leading-none">Destination</span>
             <input class="block bg-transparent text-2xl font-bold uppercase outline-none" />
           </label>
-          <label class="block w-full rounded-b-3xl rounded-t bg-light-primary-container px-4 pb-2 pt-1 text-light-on-primary-container">
+          <label class="block w-full rounded-3xl rounded-tl bg-light-secondary px-4 pb-2 pt-1 text-light-on-secondary">
             <span class="text-sm font-bold leading-none ">Start</span>
             <input class="block bg-transparent text-2xl font-bold uppercase outline-none" />
           </label>
+          <label class="block aspect-square content-center rounded-3xl rounded-br bg-light-secondary">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              class="mx-auto size-7 text-zinc-400 peer-checked:hidden"
+              fill="currentColor"
+            >
+              <path d="M440-40v-80q-125-14-214.5-103.5T122-438H42v-80h80q14-125 103.5-214.5T440-836v-80h80v80q125 14 214.5 103.5T838-518h80v80h-80q-14 125-103.5 214.5T520-120v80h-80Zm40-158q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 116 82 198t198 82Z" />
+            </svg>
+            {/* <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              class="hidden h-5 w-5 text-purple-600 peer-checked:block"
+              fill="currentColor"
+            >
+              <path d="M440-42v-80q-125-14-214.5-103.5T122-440H42v-80h80q14-125 103.5-214.5T440-838v-80h80v80q125 14 214.5 103.5T838-520h80v80h-80q-14 125-103.5 214.5T520-122v80h-80Zm40-158q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 116 82 198t198 82Zm0-120q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Z" />
+            </svg> */}
+            <input type="checkbox" class="sr-only" />
+          </label>
+          <button
+            type="submit"
+            class="col-start-2 content-center rounded-3xl bg-light-primary text-light-on-primary"
+          >
+            Go
+          </button>
         </fieldset>
-        <button
-          type="submit"
-          class="ml-auto block rounded-full bg-light-primary px-6 py-2.5 text-sm font-medium leading-5 text-light-on-primary"
-        >
-          Go
-        </button>
       </form>
     </>
   );
