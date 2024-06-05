@@ -26,10 +26,13 @@ function Connection({
 
 export default function Journey() {
   return (
-    <div class="row-span-2 flex w-full snap-x snap-mandatory snap-always gap-4 overflow-x-auto overscroll-contain bg-light-primary/10 p-4">
-      <p>Test</p>
-      <For each={connections}>{Connection}</For>
-    </div>
+    <>
+      <div class="row-span-2 flex w-full snap-x snap-mandatory snap-always gap-4 overflow-x-auto overscroll-contain bg-light-primary/10 p-4">
+        <p>Test</p>
+        <For each={connections}>{Connection}</For>
+      </div>
+      <p class="p-4 text-center">Start station</p>
+    </>
   );
 }
 
