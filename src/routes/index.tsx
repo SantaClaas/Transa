@@ -189,7 +189,10 @@ export default function Home() {
         </label>
       </fieldset> */}
       </main>
-      <form class="fixed inset-x-0 bottom-0 col-start-1 mx-1 animate-fly-in space-y-5 rounded-t-extra-large bg-light-surface-container-high p-4 px-4">
+      <form
+        action="/journey"
+        class="fixed inset-x-0 bottom-0 col-start-1 mx-1 animate-fly-in space-y-5 rounded-t-extra-large bg-light-surface-container-high p-4 px-4"
+      >
         {/* As the naviation UI is bottom to top, we should make the search use the same to be not confusing.
         Also don't you first think of where you want to go and not where you are right now? */}
         {/* animation moving bottom sheet for search into view to get focus from user */}
