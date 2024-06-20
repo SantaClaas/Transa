@@ -1,4 +1,4 @@
-import { For, type JSX } from "solid-js";
+import { For, Show, createSignal, type JSX } from "solid-js";
 
 /**
  * A recursive component building the tree of connections
@@ -27,7 +27,7 @@ function Connection({
   );
 }
 
-export function Journey1() {
+function Journey1() {
   return (
     <>
       <div class="row-span-2 flex w-full snap-x snap-mandatory snap-always gap-4 overflow-x-auto overscroll-contain bg-light-primary/10 ">
@@ -48,11 +48,12 @@ type Connection2Properties = {
   headsign: string;
 };
 const TRAM_COLOR = "bg-[#9f3d53]";
+
 function Connection2(properties: Connection2Properties): JSX.Element {
   return (
     <article
       data-type="connection"
-      class="col-span-3 grid grid-cols-subgrid grid-rows-[auto_1fr_auto] rounded-large bg-light-surface pb-2 pl-2"
+      class="col-span-3 grid h-56 grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr_auto] rounded-large bg-light-surface pb-2 pl-2"
     >
       <time
         datetime={properties.time.arrive}
@@ -103,49 +104,68 @@ function Connection2(properties: Connection2Properties): JSX.Element {
   );
 }
 
-export default function Journey2() {
+function Journey2() {
   return (
     <>
-      <main class="grid h-dvh grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr_auto] bg-light-surface-container">
-        <div
-          id="destination-station"
-          class="col-span-3 grid grid-cols-subgrid content-center pl-2"
-        >
+      <main class="h-dvh content-end  bg-light-surface-container">
+        <div id="destination-station" class="content-center pl-2">
           <p class="col-start-3 content-center py-2 text-title-md">
             Neumarkt, Köln
           </p>
         </div>
 
-        <div
-          id="connections"
-          class="col-span-3 grid grid-cols-subgrid grid-rows-[1fr_auto_1fr]"
-        >
-          <Connection2
-            time={{ arrive: "17:05", depart: "16:12", duration: "53min" }}
-            line="STR 16"
-            headsign="Niehl Sebastianstr., Köln"
-          />
-          <div class="col-span-3 grid grid-cols-subgrid pl-2">
-            <time class="content-center text-center text-label-lg text-light-on-surface-variant">
-              5min
-            </time>
-            <p class="col-start-3 content-center py-2 text-title-md">
-              Hauptbahnhof, Bonn
-            </p>
-          </div>
+        <div id="row" class="overflow-y-sc flex w-screen">
+          <div
+            id="connections"
+            class="col-span-3 flex w-screen flex-shrink-0 flex-col-reverse"
+          >
+            <Connection2
+              time={{ arrive: "17:05", depart: "16:12", duration: "53min" }}
+              line="STR 16"
+              headsign="Niehl Sebastianstr., Köln"
+            />
+            <div class="flex gap-2 pl-2">
+              <time class="content-center text-center text-label-lg text-light-on-surface-variant">
+                5min
+              </time>
+              <p class="col-start-3 content-center py-2 text-title-md">
+                Hauptbahnhof, Bonn
+              </p>
+            </div>
 
-          <Connection2
-            time={{ arrive: "16:07", depart: "15:58", duration: "9min" }}
-            line="STR 62"
-            headsign="Dottendorf Quiinusplatz, Bonn"
-          />
-          <div></div>
+            <Connection2
+              time={{ arrive: "16:07", depart: "15:58", duration: "9min" }}
+              line="STR 62"
+              headsign="Dottendorf Quiinusplatz, Bonn"
+            />
+          </div>
+          <div
+            id="connections"
+            class="col-span-3 flex w-screen flex-shrink-0 flex-col-reverse"
+          >
+            <Connection2
+              time={{ arrive: "17:05", depart: "16:12", duration: "53min" }}
+              line="STR 16"
+              headsign="Niehl Sebastianstr., Köln"
+            />
+            <div class="flex gap-2 pl-2">
+              <time class="content-center text-center text-label-lg text-light-on-surface-variant">
+                5min
+              </time>
+              <p class="col-start-3 content-center py-2 text-title-md">
+                Hauptbahnhof, Bonn
+              </p>
+            </div>
+
+            <Connection2
+              time={{ arrive: "16:07", depart: "15:58", duration: "9min" }}
+              line="STR 62"
+              headsign="Dottendorf Quiinusplatz, Bonn"
+            />
+          </div>
         </div>
 
-        <div
-          id="start-station"
-          class="col-span-3 grid grid-cols-subgrid content-center pl-2"
-        >
+        <div id="start-station" class=" content-center pl-2">
           <p
             id="start-station-name"
             class="col-start-3 content-center py-2 text-title-md"
@@ -154,6 +174,23 @@ export default function Journey2() {
           </p>
         </div>
       </main>
+    </>
+  );
+}
+
+export default function Journeys() {
+  const [toggle, setToggle] = createSignal(false);
+  return (
+    <>
+      <button
+        class="absolute right-0 top-0"
+        onClick={() => setToggle((previous) => !previous)}
+      >
+        Toggle
+      </button>
+      <Show when={toggle()} fallback={<Journey1 />}>
+        <Journey2 />
+      </Show>
     </>
   );
 }
