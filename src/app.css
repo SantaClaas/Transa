@@ -8,3 +8,14 @@
     @apply bg-light-surface text-light-on-surface caret-light-primary accent-light-primary selection:bg-light-primary selection:text-light-on-primary;
   }
 }
+
+@layer utilities {
+  .stack {
+    display: grid;
+    place-content: center;
+
+    > * {
+      grid-area: 1 / 1;
+    }
+  }
+}
