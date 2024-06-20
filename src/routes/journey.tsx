@@ -30,46 +30,15 @@ function Connection({
 function Journey1() {
   return (
     <>
-      <div class="flex h-screen flex-col-reverse overflow-y-scroll *:flex-none">
-        <div>Start</div>
-        <div
-          data-row
-          class="flex snap-x snap-mandatory grid-flow-col gap-4 overflow-x-auto overflow-y-scroll overscroll-x-contain *:flex-none"
-        >
-          <For each={new Array(10)}>
-            {(_, index) => (
-              <div
-                data-connection
-                class="flex w-screen flex-shrink-0 snap-center snap-always flex-col-reverse overflow-y-scroll  *:flex-none"
-              >
-                <div class="h-96 bg-orange-200"></div>
-                <div
-                  data-dummy
-                  class="h-96 snap-start bg-green-200"
-                  classList={{ "h-[48rem] bg-blue-200": index() === 1 }}
-                >
-                  content
-                </div>
-                {/* <div
-                  data-row
-                  class="flex snap-x snap-mandatory grid-flow-col gap-4 overflow-x-auto overscroll-contain"
-                >
-                  <For each={new Array(10)}>
-                    {() => (
-                      <div
-                        data-connection
-                        class="w-screen flex-shrink-0 snap-center snap-always bg-green-200"
-                      >
-                        <div class="h-96"></div>
-                        <div data-row> </div>
-                      </div>
-                    )}
-                  </For>
-                </div> */}
-              </div>
-            )}
-          </For>
-        </div>
+      <div class="grid size-28 snap-both snap-mandatory grid-cols-[repeat(12,1fr)] grid-rows-[repeat(12,1fr)] gap-4  overflow-scroll p-4">
+        <For each={new Array(12 * 12)}>
+          {(_, index) => (
+            <div
+              class="size-24 bg-yellow-200"
+              classList={{ "snap-center": index() !== 0 }}
+            ></div>
+          )}
+        </For>
       </div>
     </>
   );
