@@ -14,13 +14,13 @@ function Connection({
   return (
     <div
       data-connection
-      class="flex w-screen  snap-x snap-mandatory snap-center flex-col-reverse overscroll-contain text-center"
+      class="flex w-screen flex-shrink-0 snap-x snap-mandatory snap-center flex-col-reverse overflow-y-scroll overscroll-contain text-center"
     >
-      <div class="flex h-36 flex-col-reverse justify-between">
+      <div class="flex h-56 flex-shrink-0 flex-col-reverse justify-between">
         <p>{label}</p>
         <p>{destination}</p>
       </div>
-      <div class="grid snap-x snap-mandatory snap-always grid-flow-col gap-4 overflow-x-auto overscroll-contain">
+      <div class="flex snap-x snap-mandatory snap-always grid-flow-col gap-4 overflow-x-auto overscroll-contain">
         <For each={connections}>{Connection}</For>
       </div>
     </div>
@@ -30,11 +30,47 @@ function Connection({
 function Journey1() {
   return (
     <>
-      <div class="row-span-2 flex w-full snap-x snap-mandatory snap-always gap-4 overflow-x-auto overscroll-contain bg-light-primary/10 ">
-        <p>Test</p>
-        <For each={connections}>{Connection}</For>
+      <div class="flex h-screen flex-col-reverse overflow-y-scroll *:flex-none">
+        <div>Start</div>
+        <div
+          data-row
+          class="flex snap-x snap-mandatory grid-flow-col gap-4 overflow-x-auto overflow-y-scroll overscroll-x-contain *:flex-none"
+        >
+          <For each={new Array(10)}>
+            {(_, index) => (
+              <div
+                data-connection
+                class="flex w-screen flex-shrink-0 snap-center snap-always flex-col-reverse overflow-y-scroll  *:flex-none"
+              >
+                <div class="h-96 bg-orange-200"></div>
+                <div
+                  data-dummy
+                  class="h-96 snap-start bg-green-200"
+                  classList={{ "h-[48rem] bg-blue-200": index() === 1 }}
+                >
+                  content
+                </div>
+                {/* <div
+                  data-row
+                  class="flex snap-x snap-mandatory grid-flow-col gap-4 overflow-x-auto overscroll-contain"
+                >
+                  <For each={new Array(10)}>
+                    {() => (
+                      <div
+                        data-connection
+                        class="w-screen flex-shrink-0 snap-center snap-always bg-green-200"
+                      >
+                        <div class="h-96"></div>
+                        <div data-row> </div>
+                      </div>
+                    )}
+                  </For>
+                </div> */}
+              </div>
+            )}
+          </For>
+        </div>
       </div>
-      <p class="p-4 text-center">Start station</p>
     </>
   );
 }
