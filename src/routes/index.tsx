@@ -255,12 +255,12 @@ export default function Home() {
             </div>
           </div>
         </fieldset>
-        <button
-          type="submit"
-          class="w-full rounded-full bg-purple-600 px-3.5 py-2 text-sm font-semibold text-zinc-50 shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+        <a
+          href="/journey"
+          class="inline-block w-full rounded-full bg-purple-600 px-3.5 py-2 text-center text-sm font-semibold text-zinc-50 shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
         >
           Go
-        </button>
+        </a>
       </form>
     </>
   );
