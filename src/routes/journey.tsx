@@ -3,33 +3,10 @@ import { For, Match, Show, Switch, createSignal, type JSX } from "solid-js";
 function TransportConnection({
   connection,
 }: {
-  connection: Transport;
+  connection: Transport & Changes;
 }): JSX.Element {
   return (
     <>
-      <p class="flex content-center items-center px-2">
-        {/* Setting w-[3rem] and pl-8 to align with grid. TODO find better solution */}
-        <Show when={connection.time.change !== undefined}>
-          <time
-            datetime={connection.time.change}
-            class="block w-12 text-center text-label-lg text-light-on-surface-variant"
-          >
-            {connection.time.change}
-          </time>
-        </Show>
-        <span
-          class="flex-grow py-2 text-title-lg"
-          classList={{
-            [connection.time.change === undefined ? "pl-20" : "pl-8"]: true,
-          }}
-        >
-          {connection.start}
-        </span>
-
-        <Show when={connection.platform !== undefined}>
-          <span class="justify-self-end">Pl. {connection.platform}</span>
-        </Show>
-      </p>
       <article
         data-connection
         class="grid h-56 grid-cols-[3rem_auto_1fr] grid-rows-[auto_1fr_auto] rounded-large bg-light-surface p-2"
@@ -98,6 +75,34 @@ function TransportConnection({
           </span>
         </div>
       </article>
+      {/* <p class="flex content-center items-center px-2">
+        <Show when={connection.time.change !== undefined}>
+          <time
+            datetime={connection.time.change}
+            class="block w-12 text-center text-label-lg text-light-on-surface-variant"
+          >
+            {connection.time.change}
+          </time>
+        </Show>
+        <span
+          class="flex-grow py-2 text-title-lg"
+          classList={{
+            [connection.time.change === undefined ? "pl-20" : "pl-8"]: true,
+          }}
+        >
+          {connection.start}
+        </span>
+
+        <Show when={connection.platform !== undefined}>
+          <span class="justify-self-end">Pl. {connection.platform}</span>
+        </Show>
+      </p> */}
+      {/* Hide destination if it is the last connection because destination will already be shown at the top */}
+      <Show when={connection.changes !== undefined}>
+        <p class="flex content-center items-center p-2 pl-20 text-title-lg">
+          {connection.destination}
+        </p>
+      </Show>
     </>
   );
 }
@@ -105,12 +110,6 @@ function TransportConnection({
 function WalkConnection({ connection }: { connection: Walk }): JSX.Element {
   return (
     <>
-      <p class="flex content-center items-center px-2">
-        {/* Setting pl-20 to align with grid. TODO find better solution */}
-        <span class="flex-grow py-2 pl-20 text-title-lg">
-          {connection.start}
-        </span>
-      </p>
       <article
         data-connection
         class="grid grid-cols-[3rem_2rem_1fr] bg-light-surface-container-high px-2 py-1"
@@ -135,6 +134,12 @@ function WalkConnection({ connection }: { connection: Walk }): JSX.Element {
           </span>
         </p>
       </article>
+      <p class="flex content-center items-center px-2">
+        {/* Setting pl-20 to align with grid. TODO find better solution */}
+        <span class="flex-grow py-2 pl-20 text-title-lg">
+          {connection.destination}
+        </span>
+      </p>
     </>
   );
 }
@@ -184,6 +189,13 @@ function Journey1() {
     <>
       {/* flex-none: diasable elements shrinking to fit the flex container */}
       <div class="flex h-dvh flex-col-reverse overflow-y-scroll bg-light-surface-container *:flex-none">
+        {/* TODO find better solution than pl-[5rem] to align with grid */}
+        <p
+          data-start-station
+          class="content-center py-2 pl-[5rem] text-title-lg"
+        >
+          Beuel Konrad-Adenauer-Platz, Bonn
+        </p>
         {/* overscroll-x-contain: we need to be able to scroll on the y-axis */}
         <div
           data-row
@@ -284,7 +296,7 @@ type Transport = {
   line: Line2;
   headsign: string;
   /** Only set if this is the last connection/leaf in the connection tree. If this is the last connection, then changes should not exist */
-  destination?: string;
+  destination: string;
   time: {
     /** Time to change from the connection before this (parent connection). Optional because this could be the first connection */
     change?: string;
@@ -305,6 +317,7 @@ type Walk = {
   distance: string;
   time: string;
   start: string;
+  destination: string;
 
   /** Optional because this could be the last connection and destination is set. */
   changes?: Connection2[];
@@ -317,6 +330,7 @@ const WALK_BONN_HBF: Walk = {
   distance: "84m",
   time: "6min",
   start: "Hauptbahnhof, Bonn",
+  destination: "Bonn Hbf",
 };
 
 const WALK_BARBAROSSAPLATZ: Walk = {
@@ -324,7 +338,8 @@ const WALK_BARBAROSSAPLATZ: Walk = {
   timeAvailable: "9min",
   distance: "334m",
   time: "8min",
-  start: "Hauptbahnhof, Bonn",
+  start: "Köln Süd",
+  destination: "Barbarossaplatz, Köln",
 };
 
 const RE_WESEL_1628: Connection2 = {
@@ -346,6 +361,7 @@ const RE_WESEL_1628: Connection2 = {
     },
   },
   platform: "1",
+  destination: "Köln Süd",
   changes: [
     {
       ...WALK_BARBAROSSAPLATZ,
@@ -476,6 +492,7 @@ const connections2: Connection2[] = [
       depart: "15:58",
       duration: "9min",
     },
+    destination: "Hauptbahnhof, Bonn",
     changes: [
       {
         type: "transport",
@@ -517,6 +534,7 @@ const connections2: Connection2[] = [
       number: "62",
     },
     headsign: "Dottendorf Quirinusplatz, Bonn",
+    destination: "Hauptbahnhof, Bonn",
     time: {
       arrive: "16:17",
       depart: "16:08",
@@ -540,6 +558,7 @@ const connections2: Connection2[] = [
       number: "117",
     },
     headsign: "Hauptbahnhof, Bonn",
+    destination: "Hauptbahnhof, Bonn",
     time: {
       arrive: "16:15",
       depart: "16:05",
@@ -561,6 +580,7 @@ const connections2: Connection2[] = [
       number: "603",
     },
     headsign: "Hauptbahnhof, Bonn",
+    destination: "Hauptbahnhof, Bonn",
     time: {
       arrive: "16:20",
       depart: "16:09",
@@ -583,6 +603,7 @@ const connections2: Connection2[] = [
       number: "62",
     },
     headsign: "Dottendorf Quirinusplatz, Bonn",
+    destination: "Hauptbahnhof, Bonn",
     time: {
       arrive: "16:27",
       depart: "16:18",
@@ -606,6 +627,7 @@ const connections2: Connection2[] = [
       number: "640",
     },
     headsign: "Hauptbahnhof, Bonn",
+    destination: "Hauptbahnhof, Bonn",
     time: {
       arrive: "16:23",
       depart: "16:13",
