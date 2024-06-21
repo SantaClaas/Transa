@@ -48,8 +48,18 @@ type Connection2 = {
 function Connection3(connection: Connection2): JSX.Element {
   return (
     <div class="flex w-screen flex-shrink-0 snap-center snap-always flex-col-reverse overflow-y-scroll *:flex-none">
-      <p>
-        {connection.time.change} {connection.start}
+      <p class="flex gap-2 pl-2">
+        <Show when={connection.time.change !== undefined}>
+          <time
+            datetime={connection.time.change}
+            class="content-center text-center text-label-lg text-light-on-surface-variant"
+          >
+            {connection.time.change}
+          </time>
+        </Show>
+        <span class="content-center py-2 text-title-md">
+          {connection.start}
+        </span>
       </p>
       <article
         data-connection
@@ -102,7 +112,6 @@ function Connection3(connection: Connection2): JSX.Element {
       </article>
       <Switch>
         <Match when={connection.changes !== undefined}>
-          {" "}
           <div
             data-row
             class="flex snap-x snap-mandatory grid-flow-col gap-4 overflow-x-auto overscroll-x-contain"
