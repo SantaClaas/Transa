@@ -169,7 +169,7 @@ function Connection3(connection: Connection2): JSX.Element {
           {/* TODO find better solution than pl-[5rem] to align with grid */}
           <p
             data-destination-station
-            class="content-center py-2 pl-[5rem] text-title-md"
+            class="content-center py-2 pl-[5rem] text-title-lg"
           >
             Neumarkt, Köln
           </p>
@@ -191,7 +191,6 @@ function Journey1() {
         >
           <For each={connections2}>{Connection3}</For>
         </div>
-
       </div>
     </>
   );
