@@ -7,16 +7,22 @@ function TransportConnection({
 }): JSX.Element {
   return (
     <>
-      <p class="flex gap-2 pl-2">
+      <p class="flex pl-2">
+        {/* Setting w-[3rem] and pl-8 to align with grid. TODO find better solution */}
         <Show when={connection.time.change !== undefined}>
           <time
             datetime={connection.time.change}
-            class="content-center text-center text-label-lg text-light-on-surface-variant"
+            class="block w-12 content-center text-center text-label-lg text-light-on-surface-variant"
           >
             {connection.time.change}
           </time>
         </Show>
-        <span class="content-center py-2 text-title-md">
+        <span
+          class="content-center py-2 text-title-md"
+          classList={{
+            [connection.time.change === undefined ? "pl-20" : "pl-8"]: true,
+          }}
+        >
           {connection.start}
         </span>
       </p>
@@ -119,9 +125,10 @@ function Connection3(connection: Connection2): JSX.Element {
             "destination" in connection && connection.destination !== undefined
           }
         >
+          {/* TODO find better solution than pl-[5rem] to align with grid */}
           <p
             data-destination-station
-            class="content-center py-2 pl-2 text-title-md"
+            class="content-center py-2 pl-[5rem] text-title-md"
           >
             Neumarkt, Köln
           </p>
