@@ -191,6 +191,7 @@ function Journey1() {
         >
           <For each={connections2}>{Connection3}</For>
         </div>
+
       </div>
     </>
   );
