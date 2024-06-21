@@ -447,7 +447,10 @@ const RB_MESSE_1633: Connection2 = {
   ],
 };
 
-function withChange(connection: Transport, change: string): Connection2 {
+function withChange(
+  connection: Transport,
+  change: string | undefined,
+): Connection2 {
   return {
     ...connection,
     time: {
@@ -497,7 +500,11 @@ const connections2: Connection2[] = [
         },
       },
       withChange(STR_NIEHL_1622, "15min"),
-      withChange(RE_WESEL_1628, "21min"),
+      {
+        ...WALK_BONN_HBF,
+        timeAvailable: "21min",
+        changes: [withChange(RE_WESEL_1628, undefined)],
+      },
     ],
   },
   {
