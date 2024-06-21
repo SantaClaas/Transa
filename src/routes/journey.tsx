@@ -27,27 +27,13 @@ function Connection({
   );
 }
 
-type Connection2 = {
-  /** Start and at the same time destination of the parent connection before this if this is not the first connection */
-  start: string;
-  line: string;
-  headsign: string;
-  /** Only set if this is the last connection/leaf in the connection tree. If this is the last connection, then changes should not exist */
-  destination?: string;
-  time: {
-    /** Time to change from the connection before this (parent connection). Optional because this could be the first connection */
-    change?: string;
-    arrive: string;
-    depart: string;
-    duration: string;
-  };
-
-  /** Optional because this could be the last connection and destination is set. */
-  changes?: Connection2[];
-};
-function Connection3(connection: Connection2): JSX.Element {
+function TransportConnection({
+  connection,
+}: {
+  connection: Transport;
+}): JSX.Element {
   return (
-    <div class="flex w-screen flex-shrink-0 snap-center snap-always flex-col-reverse overflow-y-scroll *:flex-none">
+    <>
       <p class="flex gap-2 pl-2">
         <Show when={connection.time.change !== undefined}>
           <time
@@ -63,7 +49,7 @@ function Connection3(connection: Connection2): JSX.Element {
       </p>
       <article
         data-connection
-        class="grid h-56 grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr_auto] rounded-large bg-light-surface pb-2 pl-2"
+        class="grid h-56 grid-cols-[3rem_auto_1fr] grid-rows-[auto_1fr_auto] rounded-large bg-light-surface pb-2 pl-2"
       >
         <time
           datetime={connection.time.arrive}
@@ -96,7 +82,10 @@ function Connection3(connection: Connection2): JSX.Element {
         </div>
         <div
           data-line-pill
-          class="flex items-center gap-2 justify-self-start  rounded-full bg-[#9f3d53] px-3 py-1 text-light-inverse-on-surface"
+          class="flex items-center gap-2 justify-self-start  rounded-full px-3 py-1 text-light-inverse-on-surface"
+          classList={{
+            [connection.line.color]: true,
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -105,11 +94,44 @@ function Connection3(connection: Connection2): JSX.Element {
             width="20px"
             fill="currentColor"
           >
-            <path d="M160-260v-380q0-97 85-127t195-33l30-60H280v-60h400v60H550l-30 60q119 3 199.5 32.5T800-640v380q0 59-40.5 99.5T660-120l60 60v20h-80l-80-80H400l-80 80h-80v-20l60-60q-59 0-99.5-40.5T160-260Zm500-140H240h480-60ZM480-240q25 0 42.5-17.5T540-300q0-25-17.5-42.5T480-360q-25 0-42.5 17.5T420-300q0 25 17.5 42.5T480-240Zm-2-440h228-450 222ZM240-480h480v-120H240v120Zm60 280h360q26 0 43-17t17-43v-140H240v140q0 26 17 43t43 17Zm178-520q-134 0-172 14.5T256-680h450q-12-14-52-27t-176-13Z" />
+            <Switch>
+              <Match when={connection.line.type === "STR"}>
+                <path d="M160-260v-380q0-97 85-127t195-33l30-60H280v-60h400v60H550l-30 60q119 3 199.5 32.5T800-640v380q0 59-40.5 99.5T660-120l60 60v20h-80l-80-80H400l-80 80h-80v-20l60-60q-59 0-99.5-40.5T160-260Zm500-140H240h480-60ZM480-240q25 0 42.5-17.5T540-300q0-25-17.5-42.5T480-360q-25 0-42.5 17.5T420-300q0 25 17.5 42.5T480-240Zm-2-440h228-450 222ZM240-480h480v-120H240v120Zm60 280h360q26 0 43-17t17-43v-140H240v140q0 26 17 43t43 17Zm178-520q-134 0-172 14.5T256-680h450q-12-14-52-27t-176-13Z" />
+              </Match>
+              <Match when={connection.line.type === "Bus"}>
+                <path d="M240-120q-17 0-28.5-11.5T200-160v-82q-18-20-29-44.5T160-340v-380q0-83 77-121.5T480-880q172 0 246 37t74 123v380q0 29-11 53.5T760-242v82q0 17-11.5 28.5T720-120h-40q-17 0-28.5-11.5T640-160v-40H320v40q0 17-11.5 28.5T280-120h-40Zm242-640h224-448 224Zm158 280H240h480-80Zm-400-80h480v-120H240v120Zm100 240q25 0 42.5-17.5T400-380q0-25-17.5-42.5T340-440q-25 0-42.5 17.5T280-380q0 25 17.5 42.5T340-320Zm280 0q25 0 42.5-17.5T680-380q0-25-17.5-42.5T620-440q-25 0-42.5 17.5T560-380q0 25 17.5 42.5T620-320ZM258-760h448q-15-17-64.5-28.5T482-800q-107 0-156.5 12.5T258-760Zm62 480h320q33 0 56.5-23.5T720-360v-120H240v120q0 33 23.5 56.5T320-280Z" />
+              </Match>
+              <Match
+                when={
+                  connection.line.type === "RE" || connection.line.type === "RB"
+                }
+              >
+                <path d="M240-120v-40l60-40q-59 0-99.5-40.5T160-340v-380q0-83 77-121.5T480-880q172 0 246 37t74 123v380q0 59-40.5 99.5T660-200l60 40v40H240Zm0-440h480v-120H240v120Zm420 80H240h480-60ZM480-320q25 0 42.5-17.5T540-380q0-25-17.5-42.5T480-440q-25 0-42.5 17.5T420-380q0 25 17.5 42.5T480-320Zm-180 40h360q26 0 43-17t17-43v-140H240v140q0 26 17 43t43 17Zm180-520q-86 0-142.5 10T258-760h448q-18-20-74.5-30T480-800Zm0 40h226-448 222Z" />
+              </Match>
+            </Switch>
           </svg>
-          <span class="text-label-lg font-bold">{connection.line}</span>
+          <span class="text-label-lg font-bold">
+            {connection.line.type} {connection.line.number}
+          </span>
         </div>
       </article>
+    </>
+  );
+}
+
+function Connection3(connection: Connection2): JSX.Element {
+  return (
+    <div class="flex w-screen flex-shrink-0 snap-center snap-always flex-col-reverse overflow-y-scroll *:flex-none">
+      {/* TODO make this aligned through grid to area below */}
+      <Switch>
+        <Match when={connection.type === "transport"}>
+          <TransportConnection connection={connection as Transport} />
+        </Match>
+        <Match when={connection.type === "walk"}>
+          <div>Walk</div>
+        </Match>
+      </Switch>
+
       <Switch>
         <Match when={connection.changes !== undefined}>
           <div
@@ -119,7 +141,11 @@ function Connection3(connection: Connection2): JSX.Element {
             <For each={connection.changes}>{Connection3}</For>
           </div>
         </Match>
-        <Match when={connection.destination !== undefined}>
+        <Match
+          when={
+            "destination" in connection && connection.destination !== undefined
+          }
+        >
           <p
             data-destination-station
             class="content-center py-2 pl-2 text-title-md"
@@ -136,8 +162,7 @@ function Journey1() {
   return (
     <>
       {/* flex-none: diasable elements shrinking to fit the flex container */}
-      <div class="flex h-screen flex-col-reverse overflow-y-scroll bg-light-surface-container *:flex-none">
-        <div>Start</div>
+      <div class="flex h-dvh flex-col-reverse overflow-y-scroll bg-light-surface-container *:flex-none">
         {/* overscroll-x-contain: we need to be able to scroll on the y-axis */}
         <div
           data-row
@@ -158,7 +183,6 @@ type Connection2Properties = {
   line: string;
   headsign: string;
 };
-const TRAM_COLOR = "bg-[#9f3d53]";
 
 function Connection2(properties: Connection2Properties): JSX.Element {
   return (
@@ -290,18 +314,9 @@ function Journey2() {
 }
 
 export default function Journeys() {
-  const [toggle, setToggle] = createSignal(false);
   return (
     <>
-      <button
-        class="absolute right-0 top-0"
-        onClick={() => setToggle((previous) => !previous)}
-      >
-        Toggle
-      </button>
-      <Show when={toggle()} fallback={<Journey1 />}>
-        <Journey2 />
-      </Show>
+      <Journey1 />
     </>
   );
 }
@@ -442,21 +457,217 @@ const connections: Connection[] = [
   },
 ];
 
+type Line2 = {
+  type: "STR" | "Bus" | "RE" | "RB";
+  color: string;
+  number: string;
+};
+type Changes = {
+  /** Optional because this could be the last connection and destination is set. */
+  changes?: Connection2[];
+};
+type Transport = {
+  type: "transport";
+  /** Start and at the same time destination of the parent connection before this if this is not the first connection */
+  start: string;
+  line: Line2;
+  headsign: string;
+  /** Only set if this is the last connection/leaf in the connection tree. If this is the last connection, then changes should not exist */
+  destination?: string;
+  time: {
+    /** Time to change from the connection before this (parent connection). Optional because this could be the first connection */
+    change?: string;
+    arrive: string;
+    depart: string;
+    duration: string;
+    delay?: {
+      arrive: string;
+      depart: string;
+    };
+  };
+  platform?: string;
+};
+
+type Walk = {
+  type: "walk";
+  timeAvailable: string;
+  distance: string;
+  time: string;
+
+  /** Optional because this could be the last connection and destination is set. */
+  changes?: Connection2[];
+};
+type Connection2 = (Transport | Walk) & Changes;
+
+const WALK_BONN_HBF: Walk = {
+  type: "walk",
+  timeAvailable: "8min",
+  distance: "84m",
+  time: "6min",
+};
+
+const WALK_BARBAROSSAPLATZ: Walk = {
+  type: "walk",
+  timeAvailable: "9min",
+  distance: "334m",
+  time: "8min",
+};
+
+const RE_WESEL_1628: Connection2 = {
+  type: "transport",
+  start: "Bonn Hbf",
+  line: {
+    type: "RE",
+    color: "bg-[#7C818B]",
+    number: "5 (28524)",
+  },
+  headsign: "Wesel",
+  time: {
+    arrive: "16:21",
+    depart: "16:04",
+    duration: "17min",
+    delay: {
+      arrive: "16:45",
+      depart: "16:28",
+    },
+  },
+  changes: [
+    {
+      ...WALK_BARBAROSSAPLATZ,
+      timeAvailable: "9min",
+      changes: [
+        {
+          type: "transport",
+          start: "Barbarossaplatz, Köln",
+          line: {
+            type: "STR",
+            color: "bg-[#9f3d53]",
+            number: "18",
+          },
+          headsign: "Riehl Slabystr., Köln",
+          destination: "Neumarkt, Köln",
+          time: {
+            arrive: "16:57",
+            depart: "16:54",
+            duration: "3min",
+            delay: {
+              arrive: "16:57",
+              depart: "16:54",
+            },
+          },
+        },
+      ],
+    },
+  ],
+};
+
+const STR_NIEHL_1622: Connection2 = {
+  type: "transport",
+  start: "Hauptbahnhof, Bonn",
+  // line: "STR 16",
+  line: {
+    type: "STR",
+    color: "bg-[#9f3d53]",
+    number: "16",
+  },
+  headsign: "Niehl Sebastianstr., Köln",
+  destination: "Neumarkt, Köln",
+  time: {
+    arrive: "17:15",
+    depart: "16:22",
+    duration: "53min",
+    delay: {
+      arrive: "16:22",
+      depart: "17:15",
+    },
+  },
+};
+
+const RB_MESSE_1633: Connection2 = {
+  type: "transport",
+  start: "Bonn Hbf",
+  line: {
+    type: "RB",
+    color: "bg-[#7C818B]",
+    number: "26 (25430)",
+  },
+  headsign: "Köln Messe/Deutz",
+  destination: "Köln Süd",
+  time: {
+    arrive: "16:53",
+    depart: "16:33",
+    duration: "20min",
+    delay: {
+      arrive: "16:54",
+      depart: "16:34",
+    },
+  },
+  changes: [
+    {
+      ...WALK_BARBAROSSAPLATZ,
+      timeAvailable: "8min",
+      changes: [
+        {
+          type: "transport",
+          start: "Barbarossaplatz, Köln",
+          line: {
+            type: "STR",
+            color: "bg-[#9f3d53]",
+            number: "16",
+          },
+          headsign: "Niehl Sebastianstr., Köln",
+          destination: "Neumarkt, Köln",
+          time: {
+            arrive: "17:05",
+            depart: "17:02",
+            duration: "3min",
+            delay: {
+              arrive: "17:05",
+              depart: "17:02",
+            },
+          },
+        },
+      ],
+    },
+  ],
+};
+
+function withChange(connection: Transport, change: string): Connection2 {
+  return {
+    ...connection,
+    time: {
+      ...connection.time,
+      change,
+    },
+  };
+}
+
 const connections2: Connection2[] = [
   {
+    type: "transport",
     start: "Beuel Konrad-Adenauer-Platz, Bonn",
-    line: "STR 62",
+    // line: "STR 62",
+    line: {
+      type: "STR",
+      color: "bg-[#9f3d53]",
+      number: "62",
+    },
     headsign: "Dottendorf Quirinusplatz, Bonn",
     time: {
       arrive: "16:07",
       depart: "15:58",
       duration: "9min",
     },
-    destination: "Hauptbahnhof, Bonn",
     changes: [
       {
+        type: "transport",
         start: "Hauptbahnhof, Bonn",
-        line: "STR 16",
+        // line: "STR 16",
+        line: {
+          type: "STR",
+          color: "bg-[#9f3d53]",
+          number: "16",
+        },
         headsign: "Niehl Sebastianstr., Köln",
         destination: "Neumarkt, Köln",
         time: {
@@ -464,32 +675,129 @@ const connections2: Connection2[] = [
           arrive: "17:05",
           depart: "16:12",
           duration: "53min",
+          delay: {
+            arrive: "16:12",
+            depart: "17:05",
+          },
         },
       },
+      withChange(STR_NIEHL_1622, "15min"),
+      withChange(RE_WESEL_1628, "21min"),
     ],
   },
   {
+    type: "transport",
     start: "Beuel Konrad-Adenauer-Platz, Bonn",
-    line: "STR 62",
+    // line: "STR 62",
+    line: {
+      type: "STR",
+      color: "bg-[#9f3d53]",
+      number: "62",
+    },
     headsign: "Dottendorf Quirinusplatz, Bonn",
     time: {
       arrive: "16:17",
       depart: "16:08",
       duration: "9min",
+      delay: {
+        arrive: "16:08",
+        depart: "16:17",
+      },
     },
-    destination: "Hauptbahnhof, Bonn",
+    changes: [
+      withChange(STR_NIEHL_1622, "5min"),
+      withChange(RE_WESEL_1628, "9min"),
+    ],
+  },
+  {
+    type: "transport",
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
+    line: {
+      type: "Bus",
+      color: "bg-[#76408C]",
+      number: "117",
+    },
+    headsign: "Hauptbahnhof, Bonn",
+    time: {
+      arrive: "16:15",
+      depart: "16:05",
+      duration: "10min",
+    },
+    changes: [
+      withChange(STR_NIEHL_1622, "4min"),
+      withChange(RE_WESEL_1628, "13min"),
+    ],
+  },
+
+  // Bus -> Walk -> RE
+  {
+    type: "transport",
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
+    line: {
+      type: "Bus",
+      color: "bg-[#76408C]",
+      number: "603",
+    },
+    headsign: "Hauptbahnhof, Bonn",
+    time: {
+      arrive: "16:20",
+      depart: "16:09",
+      duration: "10min",
+    },
     changes: [
       {
-        start: "Hauptbahnhof, Bonn",
-        line: "STR 16",
-        headsign: "Niehl Sebastianstr., Köln",
-        destination: "Neumarkt, Köln",
-        time: {
-          change: "5min",
-          arrive: "17:15",
-          depart: "16:22",
-          duration: "53min",
-        },
+        ...WALK_BONN_HBF,
+        timeAvailable: "8min",
+        changes: [RE_WESEL_1628],
+      },
+    ],
+  },
+  {
+    type: "transport",
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
+    line: {
+      type: "STR",
+      color: "bg-[#9f3d53]",
+      number: "62",
+    },
+    headsign: "Dottendorf Quirinusplatz, Bonn",
+    time: {
+      arrive: "16:27",
+      depart: "16:18",
+      duration: "9min",
+    },
+    changes: [
+      {
+        ...WALK_BONN_HBF,
+        timeAvailable: "7min",
+        changes: [RB_MESSE_1633],
+      },
+    ],
+  },
+  // 640 -> RB 26
+  {
+    type: "transport",
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
+    line: {
+      type: "Bus",
+      color: "bg-[#76408C]",
+      number: "640",
+    },
+    headsign: "Hauptbahnhof, Bonn",
+    time: {
+      arrive: "16:23",
+      depart: "16:13",
+      duration: "10min",
+      delay: {
+        arrive: "16:28",
+        depart: "16:18",
+      },
+    },
+    changes: [
+      {
+        ...WALK_BONN_HBF,
+        timeAvailable: "6min",
+        changes: [RB_MESSE_1633],
       },
     ],
   },
