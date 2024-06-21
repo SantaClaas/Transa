@@ -4,7 +4,7 @@
 
 # Todo
 
-- Add walk connection UI
+- ~~Add walk connection UI~~
 - Fix bonn to bonn missing walk
 - make destination/start for next connecion stick as it doesn't change
 - Add delay information
