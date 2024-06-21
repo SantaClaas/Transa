@@ -97,17 +97,17 @@ export default function Home() {
   return (
     <>
       <header
-        class="sticky top-0 h-16 content-center px-1 py-2 text-center transition-all duration-1000 ease-out"
+        class="sticky top-0 h-16 content-center bg-light-surface-container px-1 py-2 text-center transition-all duration-1000 ease-out"
         classList={{
-          "bg-light-surface": !isScrolled(),
-          "bg-light-surface-container shadow": isScrolled(),
+          "bg-light-surface-container": !isScrolled(),
+          "bg-light-surface-container-high shadow": isScrolled(),
         }}
       >
         <h1 class="text-title-lg text-light-on-surface">Transa</h1>
       </header>
       <main class="mx-1 min-h-0 justify-between ">
         {/*TODO adjust padding bottom to match height of input area */}
-        <ol class="col-start-1 row-span-2 row-start-1 grid grid-cols-[1fr_auto] rounded-t-extra-large bg-light-surface-container pb-60">
+        <ol class="col-start-1 row-span-2 row-start-1 grid grid-cols-[1fr_auto] rounded-t-extra-large bg-light-surface pb-60">
           {/* TODO add next departure line icon and time */}
           {/* TODO add map and A/B tests */}
           {/* TODO add that ticket sale, management and information is out of scope. That's why the navigation options are limited and focus is on public transport not long distance travel */}
