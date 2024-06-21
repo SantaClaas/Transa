@@ -113,41 +113,27 @@ function WalkConnection({ connection }: { connection: Walk }): JSX.Element {
       </p>
       <article
         data-connection
-        class="grid grid-cols-[3rem_auto_1fr] grid-rows-[auto_1fr_auto] rounded-large bg-light-surface px-2 py-1"
+        class="grid grid-cols-[3rem_2rem_1fr] bg-light-surface-container-high px-2 py-1"
       >
-        <div id="line-head" class="relative col-start-2 row-start-1 size-8">
-          <div class="absolute bottom-0 left-1/2 h-4 w-1 -translate-x-1/2 place-self-start bg-light-outline-variant align-top"></div>
-          <div class="absolute inset-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-light-outline-variant"></div>
-        </div>
-
-        <time class="col-start-1 row-start-2 content-center text-center text-label-lg text-light-on-surface-variant">
+        <time class="content-center text-center text-label-lg text-light-on-surface-variant">
           {connection.timeAvailable}
         </time>
 
-        <div id="line" class="relative col-start-2 row-start-2 h-full w-8">
-          <div class="absolute left-1/2 h-full w-1 -translate-x-1/2 bg-light-outline-variant" />
-        </div>
-
-        <p class="col-start-3 row-start-2 flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="20px"
-            viewBox="0 -960 960 960"
-            width="20px"
-            fill="currentColor"
-          >
-            <path d="m280-40 112-564-72 28v136h-80v-188l202-86q14-6 29.5-7t29.5 4q14 5 26.5 14t20.5 23l40 64q26 42 70.5 69T760-520v80q-70 0-125-29t-94-74l-25 123 84 80v300h-80v-260l-84-64-72 324h-84Zm260-700q-33 0-56.5-23.5T460-820q0-33 23.5-56.5T540-900q33 0 56.5 23.5T620-820q0 33-23.5 56.5T540-740Z" />
-          </svg>
-
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="20px"
+          viewBox="0 -960 960 960"
+          width="20px"
+          fill="currentColor"
+          class="place-self-center"
+        >
+          <path d="m280-40 112-564-72 28v136h-80v-188l202-86q14-6 29.5-7t29.5 4q14 5 26.5 14t20.5 23l40 64q26 42 70.5 69T760-520v80q-70 0-125-29t-94-74l-25 123 84 80v300h-80v-260l-84-64-72 324h-84Zm260-700q-33 0-56.5-23.5T460-820q0-33 23.5-56.5T540-900q33 0 56.5 23.5T620-820q0 33-23.5 56.5T540-740Z" />
+        </svg>
+        <p class="flex items-center">
           <span>
             {connection.distance} walk (ca. {connection.time})
           </span>
         </p>
-
-        <div id="line-head" class="relative col-start-2 row-start-3 size-8">
-          <div class="absolute left-1/2 top-0 h-4 w-1 -translate-x-1/2 place-self-start bg-light-outline-variant align-top"></div>
-          <div class="absolute inset-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-light-outline-variant"></div>
-        </div>
       </article>
     </>
   );
