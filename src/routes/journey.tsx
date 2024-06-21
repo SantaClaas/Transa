@@ -7,24 +7,28 @@ function TransportConnection({
 }): JSX.Element {
   return (
     <>
-      <p class="flex pl-2">
+      <p class="flex content-center items-center px-2">
         {/* Setting w-[3rem] and pl-8 to align with grid. TODO find better solution */}
         <Show when={connection.time.change !== undefined}>
           <time
             datetime={connection.time.change}
-            class="block w-12 content-center text-center text-label-lg text-light-on-surface-variant"
+            class="block w-12 text-center text-label-lg text-light-on-surface-variant"
           >
             {connection.time.change}
           </time>
         </Show>
         <span
-          class="content-center py-2 text-title-md"
+          class="flex-grow py-2 text-title-lg"
           classList={{
             [connection.time.change === undefined ? "pl-20" : "pl-8"]: true,
           }}
         >
           {connection.start}
         </span>
+
+        <Show when={connection.platform !== undefined}>
+          <span class="justify-self-end">Pl. {connection.platform}</span>
+        </Show>
       </p>
       <article
         data-connection
@@ -107,7 +111,7 @@ function Connection3(connection: Connection2): JSX.Element {
           <TransportConnection connection={connection as Transport} />
         </Match>
         <Match when={connection.type === "walk"}>
-          <div>Walk</div>
+          <div>TODO Walk</div>
         </Match>
       </Switch>
 
@@ -301,6 +305,7 @@ const RE_WESEL_1628: Connection2 = {
       depart: "16:28",
     },
   },
+  platform: "1",
   changes: [
     {
       ...WALK_BARBAROSSAPLATZ,
