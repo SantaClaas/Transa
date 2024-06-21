@@ -1,4 +1,4 @@
-import { For, Show, createSignal, type JSX } from "solid-js";
+import { For, Match, Show, Switch, createSignal, type JSX } from "solid-js";
 
 /**
  * A recursive component building the tree of connections
@@ -27,29 +27,30 @@ function Connection({
   );
 }
 
-/** Change between two connections */
-type Change = {
-  /** Time to change */
-  time: string;
-  connection: Connection2;
-};
-
 type Connection2 = {
+  /** Start and at the same time destination of the parent connection before this if this is not the first connection */
+  start: string;
   line: string;
   headsign: string;
-  destination: string;
+  /** Only set if this is the last connection/leaf in the connection tree. If this is the last connection, then changes should not exist */
+  destination?: string;
   time: {
+    /** Time to change from the connection before this (parent connection). Optional because this could be the first connection */
     change?: string;
     arrive: string;
     depart: string;
     duration: string;
   };
 
-  changes?: Change[];
+  /** Optional because this could be the last connection and destination is set. */
+  changes?: Connection2[];
 };
 function Connection3(connection: Connection2): JSX.Element {
   return (
     <div class="flex w-screen flex-shrink-0 snap-center snap-always flex-col-reverse overflow-y-scroll *:flex-none">
+      <p>
+        {connection.time.change} {connection.start}
+      </p>
       <article
         data-connection
         class="grid h-56 grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr_auto] rounded-large bg-light-surface pb-2 pl-2"
@@ -99,23 +100,25 @@ function Connection3(connection: Connection2): JSX.Element {
           <span class="text-label-lg font-bold">{connection.line}</span>
         </div>
       </article>
-      <p>{connection.destination}</p>
-      <div
-        data-row
-        class="flex snap-x snap-mandatory grid-flow-col gap-4 overflow-x-auto overscroll-x-contain"
-      >
-        <For each={new Array(10)}>
-          {() => (
-            <div
-              data-connection
-              class="w-screen flex-shrink-0 snap-center snap-always bg-green-200"
-            >
-              <div class="h-96"></div>
-              <div data-row></div>
-            </div>
-          )}
-        </For>
-      </div>
+      <Switch>
+        <Match when={connection.changes !== undefined}>
+          {" "}
+          <div
+            data-row
+            class="flex snap-x snap-mandatory grid-flow-col gap-4 overflow-x-auto overscroll-x-contain"
+          >
+            <For each={connection.changes}>{Connection3}</For>
+          </div>
+        </Match>
+        <Match when={connection.destination !== undefined}>
+          <p
+            data-destination-station
+            class="content-center py-2 pl-2 text-title-md"
+          >
+            Neumarkt, Köln
+          </p>
+        </Match>
+      </Switch>
     </div>
   );
 }
@@ -432,6 +435,7 @@ const connections: Connection[] = [
 
 const connections2: Connection2[] = [
   {
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
     line: "STR 62",
     headsign: "Dottendorf Quirinusplatz, Bonn",
     time: {
@@ -442,16 +446,40 @@ const connections2: Connection2[] = [
     destination: "Hauptbahnhof, Bonn",
     changes: [
       {
-        time: "5min",
-        connection: {
-          line: "STR 16",
-          headsign: "Niehl Sebastianstr., Köln",
-          destination: "Neumarkt, Köln",
-          time: {
-            arrive: "17:05",
-            depart: "16:12",
-            duration: "53min",
-          },
+        start: "Hauptbahnhof, Bonn",
+        line: "STR 16",
+        headsign: "Niehl Sebastianstr., Köln",
+        destination: "Neumarkt, Köln",
+        time: {
+          change: "5min",
+          arrive: "17:05",
+          depart: "16:12",
+          duration: "53min",
+        },
+      },
+    ],
+  },
+  {
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
+    line: "STR 62",
+    headsign: "Dottendorf Quirinusplatz, Bonn",
+    time: {
+      arrive: "16:17",
+      depart: "16:08",
+      duration: "9min",
+    },
+    destination: "Hauptbahnhof, Bonn",
+    changes: [
+      {
+        start: "Hauptbahnhof, Bonn",
+        line: "STR 16",
+        headsign: "Niehl Sebastianstr., Köln",
+        destination: "Neumarkt, Köln",
+        time: {
+          change: "5min",
+          arrive: "17:15",
+          depart: "16:22",
+          duration: "53min",
         },
       },
     ],
