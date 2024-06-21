@@ -27,20 +27,79 @@ function Connection({
   );
 }
 
-function Connection3() {
+/** Change between two connections */
+type Change = {
+  /** Time to change */
+  time: string;
+  connection: Connection2;
+};
+
+type Connection2 = {
+  line: string;
+  headsign: string;
+  destination: string;
+  time: {
+    change?: string;
+    arrive: string;
+    depart: string;
+    duration: string;
+  };
+
+  changes?: Change[];
+};
+function Connection3(connection: Connection2): JSX.Element {
   return (
-    <div
-      data-connection
-      class="flex w-screen flex-shrink-0 snap-center snap-always flex-col-reverse overflow-y-scroll *:flex-none"
-    >
-      <div class="h-96 bg-orange-200">content</div>
-      {/* <div
-      data-dummy
-      class="h-96 snap-start bg-green-200"
-      classList={{ "h-[48rem] bg-blue-200": index() === 1 }}
-    >
-      content
-    </div> */}
+    <div class="flex w-screen flex-shrink-0 snap-center snap-always flex-col-reverse overflow-y-scroll *:flex-none">
+      <article
+        data-connection
+        class="grid h-56 grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr_auto] rounded-large bg-light-surface pb-2 pl-2"
+      >
+        <time
+          datetime={connection.time.arrive}
+          class="col-start-1 content-center text-center"
+        >
+          {connection.time.arrive}
+        </time>
+        <div id="line-head" class="relative col-start-2 row-start-1 size-8">
+          <div class="absolute bottom-0 left-1/2 h-4 w-1 -translate-x-1/2 place-self-start bg-light-outline align-top"></div>
+          <div class="absolute inset-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-light-outline"></div>
+        </div>
+        <time class="col-start-1 content-end pb-4 text-center text-label-lg text-light-on-surface-variant">
+          {connection.time.duration}
+        </time>
+        <div id="line" class="relative col-start-2 row-start-2 h-full w-8">
+          <div class="absolute left-1/2 h-full w-1 -translate-x-1/2 bg-light-outline" />
+        </div>
+        <p class="col-start-3 row-start-2 content-end pb-4">
+          to {connection.headsign}
+        </p>
+        <time
+          datetime={connection.time.depart}
+          class="col-start-1 content-center text-center"
+        >
+          {connection.time.depart}
+        </time>
+        <div id="line-head" class="relative col-start-2 size-8">
+          <div class="absolute left-1/2 top-0 h-4 w-1 -translate-x-1/2 place-self-start bg-light-outline align-top"></div>
+          <div class="absolute inset-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-light-outline"></div>
+        </div>
+        <div
+          data-line-pill
+          class="flex items-center gap-2 justify-self-start  rounded-full bg-[#9f3d53] px-3 py-1 text-light-inverse-on-surface"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 -960 960 960"
+            width="20px"
+            fill="currentColor"
+          >
+            <path d="M160-260v-380q0-97 85-127t195-33l30-60H280v-60h400v60H550l-30 60q119 3 199.5 32.5T800-640v380q0 59-40.5 99.5T660-120l60 60v20h-80l-80-80H400l-80 80h-80v-20l60-60q-59 0-99.5-40.5T160-260Zm500-140H240h480-60ZM480-240q25 0 42.5-17.5T540-300q0-25-17.5-42.5T480-360q-25 0-42.5 17.5T420-300q0 25 17.5 42.5T480-240Zm-2-440h228-450 222ZM240-480h480v-120H240v120Zm60 280h360q26 0 43-17t17-43v-140H240v140q0 26 17 43t43 17Zm178-520q-134 0-172 14.5T256-680h450q-12-14-52-27t-176-13Z" />
+          </svg>
+          <span class="text-label-lg font-bold">{connection.line}</span>
+        </div>
+      </article>
+      <p>{connection.destination}</p>
       <div
         data-row
         class="flex snap-x snap-mandatory grid-flow-col gap-4 overflow-x-auto overscroll-x-contain"
@@ -65,14 +124,14 @@ function Journey1() {
   return (
     <>
       {/* flex-none: diasable elements shrinking to fit the flex container */}
-      <div class="flex h-screen flex-col-reverse overflow-y-scroll *:flex-none">
+      <div class="flex h-screen flex-col-reverse overflow-y-scroll bg-light-surface-container *:flex-none">
         <div>Start</div>
         {/* overscroll-x-contain: we need to be able to scroll on the y-axis */}
         <div
           data-row
           class="flex snap-x snap-mandatory grid-flow-col gap-4 overflow-x-auto overflow-y-scroll overscroll-x-contain *:flex-none"
         >
-          <For each={new Array(10)}>{(_, index) => <Connection3 />}</For>
+          <For each={connections2}>{Connection3}</For>
         </div>
       </div>
     </>
@@ -366,6 +425,34 @@ const connections: Connection[] = [
           headsign: "Headsign 3.2",
         },
         connections: [],
+      },
+    ],
+  },
+];
+
+const connections2: Connection2[] = [
+  {
+    line: "STR 62",
+    headsign: "Dottendorf Quirinusplatz, Bonn",
+    time: {
+      arrive: "16:07",
+      depart: "15:58",
+      duration: "9min",
+    },
+    destination: "Hauptbahnhof, Bonn",
+    changes: [
+      {
+        time: "5min",
+        connection: {
+          line: "STR 16",
+          headsign: "Niehl Sebastianstr., Köln",
+          destination: "Neumarkt, Köln",
+          time: {
+            arrive: "17:05",
+            depart: "16:12",
+            duration: "53min",
+          },
+        },
       },
     ],
   },
