@@ -1,4 +1,15 @@
-import { For, Match, Show, Switch, createSignal, type JSX } from "solid-js";
+import {
+  Accessor,
+  For,
+  Match,
+  Setter,
+  Show,
+  Switch,
+  VoidProps,
+  createEffect,
+  createSignal,
+  type JSX,
+} from "solid-js";
 import { Changes, Connection, Transport, Walk, connections } from "~/data";
 
 function TransportConnection({
@@ -160,6 +171,7 @@ function Connection3(connection: Connection): JSX.Element {
 
       <Switch>
         <Match when={connection.changes !== undefined}>
+          {/* TODO remove grid-flow-col */}
           <div
             data-row
             class="flex snap-x snap-mandatory grid-flow-col gap-4 overflow-x-auto overscroll-x-contain"
@@ -198,6 +210,7 @@ function Journey1() {
           Beuel Konrad-Adenauer-Platz, Bonn
         </p>
         {/* overscroll-x-contain: we need to be able to scroll on the y-axis */}
+        {/* TODO remove grid-flow-col */}
         <div
           data-row
           class="flex snap-x snap-mandatory grid-flow-col gap-4 overflow-x-auto overflow-y-scroll overscroll-x-contain *:flex-none"
@@ -273,10 +286,155 @@ function Connection2(properties: Connection2Properties): JSX.Element {
   );
 }
 
-export default function Journeys() {
+function useObserver() {
+  let observer: IntersectionObserver | undefined;
+
+  function observeCallback(entries: IntersectionObserverEntry[]) {
+    console.debug("Intersection", entries.length);
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        console.debug("Intersecting", entry.target);
+      }
+    }
+  }
+
+  function setScroller(element: Element) {
+    observer = new IntersectionObserver(observeCallback, {
+      root: element,
+      // This ensures that the element is only triggered once it is past the snap point
+      threshold: 0.5,
+    });
+  }
+
+  function observe(element: Element) {
+    observer?.observe(element);
+  }
+
+  //TODO on cleanup
+
+  return {
+    setScroller,
+    observe,
+  };
+}
+
+// Temporary to give rows a different color
+let debugOnlyRowIndex = 0;
+
+type RowProperties = {
+  scrollLeft?: Accessor<number>;
+  setScrollLeft?: Setter<number>;
+};
+
+function Row({ scrollLeft, setScrollLeft }: VoidProps<RowProperties>) {
+  const debugIndex = debugOnlyRowIndex;
+  debugOnlyRowIndex++;
+  const { setScroller, observe } = useObserver();
+
+  const [row, setRow] = createSignal<HTMLDivElement | undefined>();
+
+  // Set scroller to row when row is set
+  createEffect(() => {
+    //TODO cleanup
+    const value = row();
+    if (value === undefined) return;
+    setScroller(value);
+  });
+
+  if (scrollLeft !== undefined) {
+    // Update row scrollLeft when scrollLeft changes
+    createEffect(() => {
+      const value = scrollLeft();
+      const scroller = row();
+      if (value === undefined || scroller === undefined) return;
+
+      console.debug("Before", scroller.scrollLeft, value);
+      scroller.scrollLeft = value;
+    });
+  }
+
+  function handleScroll(event: Event) {
+    if (!(event.target instanceof HTMLDivElement))
+      throw new Error("Expected div");
+
+    if (setScrollLeft === undefined) return;
+
+    // console.debug("Scroll", event.target.scrollLeft);
+    setScrollLeft(event.target.scrollLeft);
+  }
+
   return (
-    <>
-      <Journey1 />
-    </>
+    <div
+      ref={setScroller}
+      onScroll={setScrollLeft ? handleScroll : undefined}
+      data-row
+      class="flex w-screen snap-x snap-mandatory gap-4 overflow-y-scroll overscroll-x-contain *:flex-none"
+    >
+      <For each={Array(10)}>
+        {(_, index) => (
+          <div
+            ref={setRow}
+            id={`element-${index()}`}
+            class="h-56 w-screen snap-center snap-always content-center text-center text-white"
+            classList={{
+              "bg-orange-500": debugOnlyRowIndex === 1,
+              "bg-green-500": debugOnlyRowIndex === 2,
+            }}
+          >
+            Connection {index()}
+          </div>
+        )}
+      </For>
+    </div>
+  );
+}
+
+export default function Journeys() {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  function handleScroll(event: Event) {
+    if (!(event.target instanceof HTMLDivElement))
+      throw new Error("Expected div");
+
+    // References for later when we don't have the type
+    const scrollLeft = event.target.scrollLeft;
+    const offsetWidth = event.target.offsetWidth;
+    const children = event.target.children;
+
+    const isAtSnappingPoint = scrollLeft % offsetWidth === 0;
+    const debounce = isAtSnappingPoint ? 0 : 100;
+
+    if (timeoutId !== undefined) clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      if (!debounce) {
+        console.debug("Snap");
+        // const index = Math.floor(scrollLeft / offsetWidth);
+        // const child = children[index];
+        // console.debug("Snap at", index, child.id);
+
+        return;
+      }
+
+      console.debug("User stopped scrolling");
+    }, debounce);
+
+    console.debug("Scroll");
+    // console.debug("Scroll", event.target.scrollLeft, event.target.offsetWidth);
+  }
+
+  const [scrollLeft1, setScrollLeft1] = createSignal(0);
+  const [scrollLeft2, setScrollLeft2] = createSignal(0);
+
+  // Set scrollLeft1 to scrollLeft2 when scrollLeft2 changes
+  createEffect(() => {
+    const value = scrollLeft2();
+    setScrollLeft1(value);
+  });
+
+  return (
+    <div>
+      <Row scrollLeft={scrollLeft1} />
+      <Row scrollLeft={scrollLeft2} setScrollLeft={setScrollLeft2} />
+    </div>
   );
 }
