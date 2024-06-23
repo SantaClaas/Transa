@@ -10,24 +10,31 @@ import {
   createSignal,
   type JSX,
 } from "solid-js";
-import { Changes, Connection, Transport, Walk, connections } from "~/data";
+import {
+  Changes,
+  Connection,
+  Transport,
+  Walk,
+  connections,
+  getTime,
+} from "~/data";
+import {
+  CONNECTIONS_FROM_HAUPTBAHNHOF,
+  CONNECTIONS_TO_HAUPTBAHNHOF,
+} from "~/data2";
 
-function TransportConnection({
-  connection,
-}: {
-  connection: Transport & Changes;
-}): JSX.Element {
+function TransportConnectionInterim({ connection }: { connection: Transport }) {
   return (
     <>
       <article
         data-connection
-        class="grid h-56 grid-cols-[3rem_auto_1fr] grid-rows-[auto_1fr_auto] rounded-large bg-light-surface p-2"
+        class="grid h-56 grid-cols-[3rem_auto_1fr] grid-rows-[auto_1fr_auto] rounded-medium bg-light-surface p-2"
       >
         <time
-          datetime={connection.time.arrive}
+          datetime={getTime(connection.time.arrive)}
           class="col-start-1 content-center text-center"
         >
-          {connection.time.arrive}
+          {getTime(connection.time.arrive)}
         </time>
         <div id="line-head" class="relative col-start-2 row-start-1 size-8">
           <div class="absolute bottom-0 left-1/2 h-4 w-1 -translate-x-1/2 place-self-start bg-light-outline align-top"></div>
@@ -43,10 +50,88 @@ function TransportConnection({
           to {connection.headsign}
         </p>
         <time
-          datetime={connection.time.depart}
+          datetime={getTime(connection.time.depart)}
           class="col-start-1 content-center text-center"
         >
-          {connection.time.depart}
+          {getTime(connection.time.depart)}
+        </time>
+        <div id="line-head" class="relative col-start-2 size-8">
+          <div class="absolute left-1/2 top-0 h-4 w-1 -translate-x-1/2 place-self-start bg-light-outline align-top"></div>
+          <div class="absolute inset-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-light-outline"></div>
+        </div>
+        <div
+          data-line-pill
+          class="flex items-center gap-2 justify-self-start  rounded-full px-3 py-1 text-light-inverse-on-surface"
+          classList={{
+            [connection.line.color]: true,
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 -960 960 960"
+            width="20px"
+            fill="currentColor"
+          >
+            <Switch>
+              <Match when={connection.line.type === "STR"}>
+                <path d="M160-260v-380q0-97 85-127t195-33l30-60H280v-60h400v60H550l-30 60q119 3 199.5 32.5T800-640v380q0 59-40.5 99.5T660-120l60 60v20h-80l-80-80H400l-80 80h-80v-20l60-60q-59 0-99.5-40.5T160-260Zm500-140H240h480-60ZM480-240q25 0 42.5-17.5T540-300q0-25-17.5-42.5T480-360q-25 0-42.5 17.5T420-300q0 25 17.5 42.5T480-240Zm-2-440h228-450 222ZM240-480h480v-120H240v120Zm60 280h360q26 0 43-17t17-43v-140H240v140q0 26 17 43t43 17Zm178-520q-134 0-172 14.5T256-680h450q-12-14-52-27t-176-13Z" />
+              </Match>
+              <Match when={connection.line.type === "Bus"}>
+                <path d="M240-120q-17 0-28.5-11.5T200-160v-82q-18-20-29-44.5T160-340v-380q0-83 77-121.5T480-880q172 0 246 37t74 123v380q0 29-11 53.5T760-242v82q0 17-11.5 28.5T720-120h-40q-17 0-28.5-11.5T640-160v-40H320v40q0 17-11.5 28.5T280-120h-40Zm242-640h224-448 224Zm158 280H240h480-80Zm-400-80h480v-120H240v120Zm100 240q25 0 42.5-17.5T400-380q0-25-17.5-42.5T340-440q-25 0-42.5 17.5T280-380q0 25 17.5 42.5T340-320Zm280 0q25 0 42.5-17.5T680-380q0-25-17.5-42.5T620-440q-25 0-42.5 17.5T560-380q0 25 17.5 42.5T620-320ZM258-760h448q-15-17-64.5-28.5T482-800q-107 0-156.5 12.5T258-760Zm62 480h320q33 0 56.5-23.5T720-360v-120H240v120q0 33 23.5 56.5T320-280Z" />
+              </Match>
+              <Match
+                when={
+                  connection.line.type === "RE" || connection.line.type === "RB"
+                }
+              >
+                <path d="M240-120v-40l60-40q-59 0-99.5-40.5T160-340v-380q0-83 77-121.5T480-880q172 0 246 37t74 123v380q0 59-40.5 99.5T660-200l60 40v40H240Zm0-440h480v-120H240v120Zm420 80H240h480-60ZM480-320q25 0 42.5-17.5T540-380q0-25-17.5-42.5T480-440q-25 0-42.5 17.5T420-380q0 25 17.5 42.5T480-320Zm-180 40h360q26 0 43-17t17-43v-140H240v140q0 26 17 43t43 17Zm180-520q-86 0-142.5 10T258-760h448q-18-20-74.5-30T480-800Zm0 40h226-448 222Z" />
+              </Match>
+            </Switch>
+          </svg>
+          <span class="text-label-lg font-bold">
+            {connection.line.type} {connection.line.number}
+          </span>
+        </div>
+      </article>
+    </>
+  );
+}
+function TransportConnection({
+  connection,
+}: {
+  connection: Transport & Changes;
+}): JSX.Element {
+  return (
+    <>
+      <article
+        data-connection
+        class="grid h-56 grid-cols-[3rem_auto_1fr] grid-rows-[auto_1fr_auto] rounded-large bg-light-surface p-2"
+      >
+        <time
+          datetime={getTime(connection.time.arrive)}
+          class="col-start-1 content-center text-center"
+        >
+          {getTime(connection.time.arrive)}
+        </time>
+        <div id="line-head" class="relative col-start-2 row-start-1 size-8">
+          <div class="absolute bottom-0 left-1/2 h-4 w-1 -translate-x-1/2 place-self-start bg-light-outline align-top"></div>
+          <div class="absolute inset-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-light-outline"></div>
+        </div>
+        <time class="col-start-1 content-end pb-4 text-center text-label-lg text-light-on-surface-variant">
+          {connection.time.duration}
+        </time>
+        <div id="line" class="relative col-start-2 row-start-2 h-full w-8">
+          <div class="absolute left-1/2 h-full w-1 -translate-x-1/2 bg-light-outline" />
+        </div>
+        <p class="col-start-3 row-start-2 content-end pb-4">
+          to {connection.headsign}
+        </p>
+        <time
+          datetime={getTime(connection.time.depart)}
+          class="col-start-1 content-center text-center"
+        >
+          {getTime(connection.time.depart)}
         </time>
         <div id="line-head" class="relative col-start-2 size-8">
           <div class="absolute left-1/2 top-0 h-4 w-1 -translate-x-1/2 place-self-start bg-light-outline align-top"></div>
@@ -122,6 +207,12 @@ function TransportConnection({
 function WalkConnection({ connection }: { connection: Walk }): JSX.Element {
   return (
     <>
+      <p class="flex content-center items-center px-2">
+        {/* Setting pl-20 to align with grid. TODO find better solution */}
+        <span class="flex-grow py-2 pl-20 text-title-lg">
+          {connection.destination}
+        </span>
+      </p>
       <article
         data-connection
         class="grid grid-cols-[3rem_2rem_1fr] bg-light-surface-container-high px-2 py-1"
@@ -146,12 +237,6 @@ function WalkConnection({ connection }: { connection: Walk }): JSX.Element {
           </span>
         </p>
       </article>
-      <p class="flex content-center items-center px-2">
-        {/* Setting pl-20 to align with grid. TODO find better solution */}
-        <span class="flex-grow py-2 pl-20 text-title-lg">
-          {connection.destination}
-        </span>
-      </p>
     </>
   );
 }
@@ -286,20 +371,11 @@ function Connection2(properties: Connection2Properties): JSX.Element {
   );
 }
 
-function useObserver() {
+function useObserver(callback: IntersectionObserverCallback) {
   let observer: IntersectionObserver | undefined;
 
-  function observeCallback(entries: IntersectionObserverEntry[]) {
-    console.debug("Intersection", entries.length);
-    for (const entry of entries) {
-      if (entry.isIntersecting) {
-        console.debug("Intersecting", entry.target);
-      }
-    }
-  }
-
   function setScroller(element: Element) {
-    observer = new IntersectionObserver(observeCallback, {
+    observer = new IntersectionObserver(callback, {
       root: element,
       // This ensures that the element is only triggered once it is past the snap point
       threshold: 0.5,
@@ -329,7 +405,9 @@ type RowProperties = {
 function Row({ scrollLeft, setScrollLeft }: VoidProps<RowProperties>) {
   const debugIndex = debugOnlyRowIndex;
   debugOnlyRowIndex++;
-  const { setScroller, observe } = useObserver();
+  const { setScroller, observe } = useObserver(() => {
+    throw new Error("todo");
+  });
 
   const [row, setRow] = createSignal<HTMLDivElement | undefined>();
 
@@ -390,37 +468,37 @@ function Row({ scrollLeft, setScrollLeft }: VoidProps<RowProperties>) {
 }
 
 export default function Journeys() {
-  let timeoutId: ReturnType<typeof setTimeout> | undefined;
-  // function handleScroll(event: Event) {
-  //   if (!(event.target instanceof HTMLDivElement))
-  //     throw new Error("Expected div");
+  const [isWalkSnapped, setIsWalkSnapped] = createSignal(false);
 
-  //   // References for later when we don't have the type
-  //   const scrollLeft = event.target.scrollLeft;
-  //   const offsetWidth = event.target.offsetWidth;
-  //   const children = event.target.children;
+  // To not trigger animation on initial render
+  let dirtyFlag = false;
+  const wasWalkSnapped = () => {
+    if (dirtyFlag) {
+      dirtyFlag = false;
+      return true;
+    }
 
-  //   const isAtSnappingPoint = scrollLeft % offsetWidth === 0;
-  //   const debounce = isAtSnappingPoint ? 0 : 100;
+    return false;
+  };
+  createEffect(() => {
+    if (isWalkSnapped()) {
+      dirtyFlag = true;
+    }
+  });
 
-  //   if (timeoutId !== undefined) clearTimeout(timeoutId);
+  function observeCallback([first]: IntersectionObserverEntry[]) {
+    //TODO avoid initial call with all elements
+    const target = first.target;
 
-  //   timeoutId = setTimeout(() => {
-  //     if (!debounce) {
-  //       console.debug("Snap");
-  //       // const index = Math.floor(scrollLeft / offsetWidth);
-  //       // const child = children[index];
-  //       // console.debug("Snap at", index, child.id);
+    const isWalkFocused =
+      target instanceof HTMLElement &&
+      first.isIntersecting &&
+      target.dataset.type === "walk";
 
-  //       return;
-  //     }
-
-  //     console.debug("User stopped scrolling");
-  //   }, debounce);
-
-  //   console.debug("Scroll");
-  //   // console.debug("Scroll", event.target.scrollLeft, event.target.offsetWidth);
-  // }
+    console.debug("Intersection", isWalkFocused);
+    setIsWalkSnapped(isWalkFocused);
+  }
+  const { setScroller, observe } = useObserver(observeCallback);
 
   const [row1, setRow1] = createSignal<HTMLDivElement | undefined>();
 
@@ -436,14 +514,16 @@ export default function Journeys() {
   }
 
   return (
-    <main class="flex h-dvh flex-col-reverse">
-      <p>Starting station</p>{" "}
+    <main class="flex h-dvh flex-col-reverse bg-light-surface-container">
+      <p data-start-station class="content-center py-2 pl-[5rem] text-title-lg">
+        Beuel Konrad-Adenauer-Platz, Bonn
+      </p>
       <div
         onScroll={handleScroll}
-        class="grid snap-x snap-mandatory grid-flow-col gap-4 overflow-y-scroll"
+        class="grid snap-x snap-mandatory grid-flow-col gap-4 overflow-y-scroll rounded-large"
         onScrollEnd={() => setIsScrolling(false)}
       >
-        <For each={Array(10)}>
+        {/* <For each={Array(10)}>
           {(_, index) => (
             <div
               id={`element-${index}`}
@@ -452,23 +532,70 @@ export default function Journeys() {
               Content {index()}
             </div>
           )}
+        </For> */}
+        <For each={CONNECTIONS_TO_HAUPTBAHNHOF}>
+          {(connection) => (
+            <div
+              data-type={connection.type}
+              class="h-56 w-screen snap-center snap-always"
+            >
+              <Switch>
+                <Match when={connection.type === "transport"}>
+                  <TransportConnectionInterim
+                    connection={connection as Transport}
+                  />
+                </Match>
+                <Match when={connection.type === "walk"}>
+                  <WalkConnection connection={connection as Walk} />
+                </Match>
+              </Switch>
+            </div>
+          )}
         </For>
       </div>
-      <div>Important Station</div>
+      <p class="flex content-center items-center p-2 pl-20 text-title-lg">
+        Hauptbahnhof, Bonn
+      </p>
+      {/* Can't detect intersection/snap with CSS. Therefore we need to use JS */}
       <div
-        ref={setRow1}
-        class="grid snap-mandatory grid-flow-col gap-4 overflow-y-scroll "
+        ref={(element) => {
+          setRow1(element);
+          setScroller(element);
+        }}
+        class="grid snap-mandatory grid-flow-col content-end gap-4 overflow-y-scroll"
         classList={{
           "snap-x": !isScrolling(),
+          "animate-grow-walk": !isWalkSnapped() && wasWalkSnapped(),
+          "h-24 animate-shrink-walk": isWalkSnapped(),
         }}
       >
-        <For each={Array(10)}>
+        {/* <For each={Array(10)}>
           {(_, index) => (
             <div
               id={`element-${index}`}
               class="h-56 w-screen snap-center snap-always bg-orange-500"
             >
               Content {index()}
+            </div>
+          )}
+        </For> */}
+        <For each={CONNECTIONS_FROM_HAUPTBAHNHOF}>
+          {(connection) => (
+            <div
+              ref={observe}
+              data-type={connection.type}
+              class="h-56 w-screen snap-center snap-always content-end self-end data-[type=walk]:h-24"
+            >
+              <Switch>
+                <Match when={connection.type === "transport"}>
+                  <TransportConnectionInterim
+                    connection={connection as Transport}
+                  />
+                </Match>
+                <Match when={connection.type === "walk"}>
+                  <WalkConnection connection={connection as Walk} />
+                </Match>
+              </Switch>
             </div>
           )}
         </For>

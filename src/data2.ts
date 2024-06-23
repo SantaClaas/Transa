@@ -1,0 +1,191 @@
+import {
+  Connection,
+  RE_WESEL_1628,
+  STR_NIEHL_1622,
+  WALK_BONN_HBF,
+  createTime,
+  withChange,
+} from "./data";
+
+export const CONNECTIONS_TO_HAUPTBAHNHOF: Connection[] = [
+  {
+    type: "transport",
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
+    // line: "STR 62",
+    line: {
+      type: "STR",
+      color: "bg-[#9f3d53]",
+      number: "62",
+    },
+    headsign: "Dottendorf Quirinusplatz, Bonn",
+    time: {
+      //   arrive: "16:07",
+      arrive: createTime(16, 7),
+      //   depart: "15:58",
+      depart: createTime(15, 58),
+      duration: "9min",
+    },
+    destination: "Hauptbahnhof, Bonn",
+  },
+  {
+    type: "transport",
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
+    // line: "STR 62",
+    line: {
+      type: "STR",
+      color: "bg-[#9f3d53]",
+      number: "62",
+    },
+    headsign: "Dottendorf Quirinusplatz, Bonn",
+    destination: "Hauptbahnhof, Bonn",
+    time: {
+      //   arrive: "16:17",
+      arrive: createTime(16, 17),
+      //   depart: "16:08",
+      depart: createTime(16, 8),
+      duration: "9min",
+      delay: {
+        // arrive: "16:08",
+        arrive: createTime(16, 8),
+        // depart: "16:17",
+        depart: createTime(16, 17),
+      },
+    },
+  },
+  {
+    type: "transport",
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
+    line: {
+      type: "Bus",
+      color: "bg-[#76408C]",
+      number: "117",
+    },
+    headsign: "Hauptbahnhof, Bonn",
+    destination: "Hauptbahnhof, Bonn",
+    time: {
+      //   arrive: "16:15",
+      arrive: createTime(16, 15),
+      //   depart: "16:05",
+      depart: createTime(16, 5),
+      duration: "10min",
+    },
+  },
+  {
+    type: "transport",
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
+    line: {
+      type: "Bus",
+      color: "bg-[#76408C]",
+      number: "603",
+    },
+    headsign: "Hauptbahnhof, Bonn",
+    destination: "Hauptbahnhof, Bonn",
+    time: {
+      //   arrive: "16:20",
+      arrive: createTime(16, 20),
+      //   depart: "16:09",
+      depart: createTime(16, 9),
+      duration: "10min",
+    },
+  },
+  {
+    type: "transport",
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
+    line: {
+      type: "STR",
+      color: "bg-[#9f3d53]",
+      number: "62",
+    },
+    headsign: "Dottendorf Quirinusplatz, Bonn",
+    destination: "Hauptbahnhof, Bonn",
+    time: {
+      //   arrive: "16:27",
+      arrive: createTime(16, 27),
+      //   depart: "16:18",
+      depart: createTime(16, 18),
+      duration: "9min",
+    },
+  },
+  {
+    type: "transport",
+    start: "Beuel Konrad-Adenauer-Platz, Bonn",
+    line: {
+      type: "Bus",
+      color: "bg-[#76408C]",
+      number: "640",
+    },
+    headsign: "Hauptbahnhof, Bonn",
+    destination: "Hauptbahnhof, Bonn",
+    time: {
+      //   arrive: "16:23",
+      arrive: createTime(16, 23),
+      //   depart: "16:13",
+      depart: createTime(16, 13),
+      duration: "10min",
+      delay: {
+        // arrive: "16:28",
+        arrive: createTime(16, 28),
+        // depart: "16:18",
+        depart: createTime(16, 18),
+      },
+    },
+  },
+];
+
+export const CONNECTIONS_FROM_HAUPTBAHNHOF: Connection[] = [
+  {
+    type: "transport",
+    start: "Hauptbahnhof, Bonn",
+    // line: "STR 16",
+    line: {
+      type: "STR",
+      color: "bg-[#9f3d53]",
+      number: "16",
+    },
+    headsign: "Niehl Sebastianstr., Köln",
+    destination: "Neumarkt, Köln",
+    time: {
+      change: "5min",
+      //   arrive: "17:05",
+      arrive: createTime(17, 5),
+      //   depart: "16:12",
+      depart: createTime(16, 12),
+      duration: "53min",
+      delay: {
+        // arrive: "16:12",
+        arrive: createTime(16, 12),
+        // depart: "17:05",
+        depart: createTime(17, 5),
+      },
+    },
+  },
+  {
+    type: "transport",
+    start: "Hauptbahnhof, Bonn",
+    // line: "STR 16",
+    line: {
+      type: "STR",
+      color: "bg-[#9f3d53]",
+      number: "16",
+    },
+    headsign: "Niehl Sebastianstr., Köln",
+    destination: "Neumarkt, Köln",
+    time: {
+      // arrive: "17:15",
+      arrive: createTime(17, 15),
+      // depart: "16:22",
+      depart: createTime(16, 22),
+      duration: "53min",
+      delay: {
+        //   arrive: "16:22",
+        arrive: createTime(16, 22),
+        //   depart: "17:15",
+        depart: createTime(17, 15),
+      },
+    },
+  },
+  {
+    ...WALK_BONN_HBF,
+    timeAvailable: "21min",
+  },
+];
