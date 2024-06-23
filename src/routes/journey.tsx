@@ -391,50 +391,90 @@ function Row({ scrollLeft, setScrollLeft }: VoidProps<RowProperties>) {
 
 export default function Journeys() {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
-  function handleScroll(event: Event) {
-    if (!(event.target instanceof HTMLDivElement))
-      throw new Error("Expected div");
+  // function handleScroll(event: Event) {
+  //   if (!(event.target instanceof HTMLDivElement))
+  //     throw new Error("Expected div");
 
-    // References for later when we don't have the type
-    const scrollLeft = event.target.scrollLeft;
-    const offsetWidth = event.target.offsetWidth;
-    const children = event.target.children;
+  //   // References for later when we don't have the type
+  //   const scrollLeft = event.target.scrollLeft;
+  //   const offsetWidth = event.target.offsetWidth;
+  //   const children = event.target.children;
 
-    const isAtSnappingPoint = scrollLeft % offsetWidth === 0;
-    const debounce = isAtSnappingPoint ? 0 : 100;
+  //   const isAtSnappingPoint = scrollLeft % offsetWidth === 0;
+  //   const debounce = isAtSnappingPoint ? 0 : 100;
 
-    if (timeoutId !== undefined) clearTimeout(timeoutId);
+  //   if (timeoutId !== undefined) clearTimeout(timeoutId);
 
+  //   timeoutId = setTimeout(() => {
+  //     if (!debounce) {
+  //       console.debug("Snap");
+  //       // const index = Math.floor(scrollLeft / offsetWidth);
+  //       // const child = children[index];
+  //       // console.debug("Snap at", index, child.id);
+
+  //       return;
+  //     }
+
+  //     console.debug("User stopped scrolling");
+  //   }, debounce);
+
+  //   console.debug("Scroll");
+  //   // console.debug("Scroll", event.target.scrollLeft, event.target.offsetWidth);
+  // }
+
+  const [row1, setRow1] = createSignal<HTMLDivElement | undefined>();
+
+  const [isScrolling, setIsScrolling] = createSignal(false);
+  function handleScroll({ target }: { target: Element }) {
+    // This should not trigger an update even if we set it to true rapidly again and again
+    setIsScrolling(true);
+
+    const otherRow = row1();
+    if (otherRow === undefined) return;
+
+    otherRow.scrollLeft = target.scrollLeft;
+    // Debounce
+    clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
-      if (!debounce) {
-        console.debug("Snap");
-        // const index = Math.floor(scrollLeft / offsetWidth);
-        // const child = children[index];
-        // console.debug("Snap at", index, child.id);
-
-        return;
-      }
-
-      console.debug("User stopped scrolling");
-    }, debounce);
-
-    console.debug("Scroll");
-    // console.debug("Scroll", event.target.scrollLeft, event.target.offsetWidth);
+      setIsScrolling(false);
+    }, 100);
   }
 
-  const [scrollLeft1, setScrollLeft1] = createSignal(0);
-  const [scrollLeft2, setScrollLeft2] = createSignal(0);
-
-  // Set scrollLeft1 to scrollLeft2 when scrollLeft2 changes
-  createEffect(() => {
-    const value = scrollLeft2();
-    setScrollLeft1(value);
-  });
-
   return (
-    <div>
-      <Row scrollLeft={scrollLeft1} />
-      <Row scrollLeft={scrollLeft2} setScrollLeft={setScrollLeft2} />
-    </div>
+    <>
+      <div
+        ref={setRow1}
+        class="flex snap-mandatory gap-4 overflow-y-scroll *:flex-none"
+        classList={{
+          "snap-x": !isScrolling(),
+        }}
+      >
+        <For each={Array(10)}>
+          {(_, index) => (
+            <div
+              id={`element-${index}`}
+              class="h-56 w-screen snap-center snap-always bg-orange-500"
+            >
+              Content {index()}
+            </div>
+          )}
+        </For>
+      </div>
+      <div
+        onScroll={handleScroll}
+        class="flex snap-x snap-mandatory gap-4 overflow-y-scroll *:flex-none"
+      >
+        <For each={Array(10)}>
+          {(_, index) => (
+            <div
+              id={`element-${index}`}
+              class="h-56 w-screen snap-center snap-always bg-green-500"
+            >
+              Content {index()}
+            </div>
+          )}
+        </For>
+      </div>
+    </>
   );
 }
