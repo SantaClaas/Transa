@@ -433,18 +433,31 @@ export default function Journeys() {
     if (otherRow === undefined) return;
 
     otherRow.scrollLeft = target.scrollLeft;
-    // Debounce
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      setIsScrolling(false);
-    }, 100);
   }
 
   return (
-    <>
+    <main class="flex h-dvh flex-col-reverse">
+      <p>Starting station</p>{" "}
+      <div
+        onScroll={handleScroll}
+        class="grid snap-x snap-mandatory grid-flow-col gap-4 overflow-y-scroll"
+        onScrollEnd={() => setIsScrolling(false)}
+      >
+        <For each={Array(10)}>
+          {(_, index) => (
+            <div
+              id={`element-${index}`}
+              class="h-56 w-screen snap-center snap-always bg-green-500"
+            >
+              Content {index()}
+            </div>
+          )}
+        </For>
+      </div>
+      <div>Important Station</div>
       <div
         ref={setRow1}
-        class="flex snap-mandatory gap-4 overflow-y-scroll *:flex-none"
+        class="grid snap-mandatory grid-flow-col gap-4 overflow-y-scroll "
         classList={{
           "snap-x": !isScrolling(),
         }}
@@ -460,21 +473,6 @@ export default function Journeys() {
           )}
         </For>
       </div>
-      <div
-        onScroll={handleScroll}
-        class="flex snap-x snap-mandatory gap-4 overflow-y-scroll *:flex-none"
-      >
-        <For each={Array(10)}>
-          {(_, index) => (
-            <div
-              id={`element-${index}`}
-              class="h-56 w-screen snap-center snap-always bg-green-500"
-            >
-              Content {index()}
-            </div>
-          )}
-        </For>
-      </div>
-    </>
+    </main>
   );
 }
