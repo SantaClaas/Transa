@@ -32,7 +32,7 @@ function TransportConnection({
       </p>
       <article
         data-connection
-        class="grid h-56 grid-cols-[3rem_auto_1fr] grid-rows-[auto_1fr_auto] rounded-large bg-light-surface p-2"
+        class="relative grid h-56 grid-cols-[3rem_auto_1fr] grid-rows-[auto_1fr_auto] rounded-large bg-light-surface p-2"
       >
         <time
           datetime={connection.time.arrive}
@@ -50,9 +50,22 @@ function TransportConnection({
         <div id="line" class="relative col-start-2 row-start-2 h-full w-8">
           <div class="absolute left-1/2 h-full w-1 -translate-x-1/2 bg-light-outline" />
         </div>
-        <p class="col-start-3 row-start-2 content-end pb-4">
-          to {connection.headsign}
-        </p>
+        <div class="col-start-3 row-start-2 content-end pb-4">
+          <p class="mb-9">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="currentColor"
+              class="-ml-1 inline"
+            >
+              <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
+            </svg>
+            <span>26 Halte</span>
+          </p>
+          <p>to {connection.headsign}</p>
+        </div>
         <time
           datetime={connection.time.depart}
           class="col-start-1 content-center text-center"
@@ -97,6 +110,16 @@ function TransportConnection({
             {connection.line.type} {connection.line.number}
           </span>
         </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="currentColor"
+          class="absolute -bottom-2 right-2 size-10 rotate-180 text-gray-400"
+        >
+          <path d="M160-400q-33 0-56.5-23.5T80-480q0-33 23.5-56.5T160-560q33 0 56.5 23.5T240-480q0 33-23.5 56.5T160-400Zm0-54q11 0 18.5-7.5T186-480q0-11-7.5-18.5T160-506q-11 0-18.5 7.5T134-480q0 11 7.5 18.5T160-454Zm214 54q-33 0-56.5-23.5T294-480q0-33 23.5-56.5T374-560q33 0 56.5 23.5T454-480q0 33-23.5 56.5T374-400Zm0-54q11 0 18.5-7.5T400-480q0-11-7.5-18.5T374-506q-11 0-18.5 7.5T348-480q0 11 7.5 18.5T374-454Zm212 54q-33 0-56.5-23.5T506-480q0-33 23.5-56.5T586-560q33 0 56.5 23.5T666-480q0 33-23.5 56.5T586-400Zm0-54q11 0 18.5-7.5T612-480q0-11-7.5-18.5T586-506q-11 0-18.5 7.5T560-480q0 11 7.5 18.5T586-454Zm214 54q-33 0-56.5-23.5T720-480q0-33 23.5-56.5T800-560q33 0 56.5 23.5T880-480q0 33-23.5 56.5T800-400Z" />
+        </svg>
       </article>
     </>
   );
@@ -171,10 +194,30 @@ function Connection3(connection: Connection2): JSX.Element {
             data-destination-station
             class="content-center py-2 pl-[5rem] text-title-lg"
           >
-            Neumarkt, Köln
+            Neumarkt, Köln{" "}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="currentColor"
+              class="absolute right-2 top-2"
+            >
+              <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm0-80h480v-400H240v400Zm240-120q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80ZM240-160v-400 400Z" />
+            </svg>
           </p>
         </Match>
       </Switch>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 -960 960 960"
+        width="24px"
+        fill="currentColor"
+        class="absolute left-2 top-2"
+      >
+        <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
+      </svg>
     </div>
   );
 }
